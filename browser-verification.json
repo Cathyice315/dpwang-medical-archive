@@ -1,0 +1,35 @@
+[
+  {
+    "browser": "edge-desktop",
+    "passed": true,
+    "uiVersion": 3,
+    "scopeYear": 2026,
+    "examinations": 4,
+    "allPdfPagesRendered": 11,
+    "externalRequests": 0,
+    "scriptErrors": 0,
+    "requestLevelLazyLoadingVerified": false
+  },
+  {
+    "browser": "webkit-mobile",
+    "passed": true,
+    "uiVersion": 3,
+    "scopeYear": 2026,
+    "examinations": 4,
+    "allPdfPagesRendered": 11,
+    "externalRequests": 0,
+    "scriptErrors": 0,
+    "requestLevelLazyLoadingVerified": false
+  },
+  {
+    "browser": "edge-http",
+    "passed": true,
+    "uiVersion": 3,
+    "scopeYear": 2026,
+    "examinations": 4,
+    "allPdfPagesRendered": 11,
+    "externalRequests": 0,
+    "scriptErrors": 0,
+    "requestLevelLazyLoadingVerified": true
+  }
+]

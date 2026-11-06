@@ -1,0 +1,51 @@
+MMI@THE HOSPITAL
+Macquarie University Hospital
+Ground Floor, 2 Technology Place
+Macquarie University NSW 2109
+ABN: 46 141 203 125
+MQ Health Pty Ltd
+MMI@MACQUARIE CENTRE
+Shop 1046 (near the ice rink) Macquarie Centre
+Cnr Herring and Waterloo Roads
+North Ryde NSW 2113
+ABN: 46 141 203 125
+MQ Health Pty Ltd
+P: 02 9430 1100 | F: 02 9430 1199 | E: mmi.enquires@mqhealth.org.au | www.mqmi.com.au
+Intelerad Medical Systems - Report exported on Thu, Nov 5, 2026 20:44:41 +1100 - Page 1 of 1
+Patient Name:
+WANG, DONGPING
+Patient ID:
+MQ152436
+Gender:
+Male
+Date of Birth:
+January 7, 1957
+Referring Physician:
+CHAN, CAROLINE
+Accession Number:
+3339608-CT
+Examination Date:
+July 27, 2026 08:42
+Report Status:
+Final
+Modality:
+CT
+ 
+Report for Computed Tomography
+CT RIGHT KNEE
+HISTORY: Right medial knee pain after walking. Tenderness over insertion of right MCL insertion, ?MCL sprain.
+TECHNIQUE: Noncontrast CT of the right knee.
+FINDINGS:
+No acute fracture is demonstrated. Mild medial and lateral compartment degenerative change with small osteophytes and minimal
+joint space narrowing. No abnormality seen in relation to the medial or lateral collateral ligaments within the limitations of CT. No
+large meniscal tear or extrusion is appreciated on CT.
+There is subchondral cystic change in the lateral patellar facet superiorly in keeping with full-thickness cartilage loss. There are mild
+to moderate degenerative changes at the proximal tibiofibular joint. Mild enthesopathy of the distal quadriceps and proximal patellar
+tendon insertion. Small patellofemoral osteophytes.
+Trace knee joint effusion. No large Baker's cyst. No calcified intra-articular bodies. Mild vascular calcification. Enthesopathy at the
+posterior tibial and soleal line noted.
+CONCLUSION:
+Patellofemoral compartment degenerative changes with full-thickness cartilage loss in the lateral patellar facet.
+Mild medial and lateral compartment degenerative changes.
+No evidence of high-grade MCL injury on CT. Ultrasound or MRI would better assess the soft tissues.
+Radiologist: Dr S. McDonald

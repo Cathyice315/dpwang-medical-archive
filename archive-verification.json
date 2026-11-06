@@ -1,0 +1,28 @@
+{
+  "scopeYear": 2026,
+  "examinations": 4,
+  "originalReports": 4,
+  "originalReportPages": 5,
+  "chineseReferenceReports": 4,
+  "chineseReferencePages": 6,
+  "imageSets": 27,
+  "frames": 2207,
+  "framesHashAndPngVerified": 2207,
+  "frameFilesBytes": 561561182,
+  "portalNoReport": [],
+  "portalNoImages": [],
+  "nativePortalExports": [
+    {
+      "exam": "3339609-CR",
+      "series": 3,
+      "frame": 1,
+      "method": "Patient portal native current-image download",
+      "width": 640,
+      "height": 492
+    }
+  ],
+  "diagnosticDicom": false,
+  "completeForPortalInventory": true,
+  "completeArchiveUnchanged": true,
+  "copiedDataFilesVerified": 8916
+}

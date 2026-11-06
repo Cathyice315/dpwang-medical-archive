@@ -1,0 +1,15 @@
+{
+  "path": "exams/2026-07-27_3339609-CR/series-003/00001.png",
+  "nativePath": "exams/2026-07-27_3339609-CR/series-003/00001.j2c",
+  "metadata": "exams/2026-07-27_3339609-CR/series-003/1.2.840.113619.2.485.4.8323328.1785106763.760119.1.metadata.json",
+  "contentType": "image/j2c",
+  "quality": "targetPixelCount=1024000",
+  "decoder": "Patient portal native current-image download",
+  "width": 640,
+  "height": 492,
+  "bytes": 1817152,
+  "sha256": "60ff5a264850bf60652032cddfcfb0effd3d663293fe09c319a74a0efb9d783f",
+  "previewSourceQuality": "targetPixelCount=1024000&amp;j2cTargetSize=51200",
+  "previewNativePath": "exams/2026-07-27_3339609-CR/series-003/00001-portal-display.j2c",
+  "pngSha256": "7e9f164f42ea2b95af1da1ef0f80b15940cb85b2b1bf98712745f914c7b160da"
+}

@@ -1,0 +1,40 @@
+MMI@THE HOSPITAL
+Macquarie University Hospital
+Ground Floor, 2 Technology Place
+Macquarie University NSW 2109
+ABN: 46 141 203 125
+MQ Health Pty Ltd
+MMI@MACQUARIE CENTRE
+Shop 1046 (near the ice rink) Macquarie Centre
+Cnr Herring and Waterloo Roads
+North Ryde NSW 2113
+ABN: 46 141 203 125
+MQ Health Pty Ltd
+P: 02 9430 1100 | F: 02 9430 1199 | E: mmi.enquires@mqhealth.org.au | www.mqmi.com.au
+Intelerad Medical Systems - Report exported on Thu, Nov 5, 2026 20:44:44 +1100 - Page 1 of 1
+Patient Name:
+WANG, DONGPING
+Patient ID:
+MQ152436
+Gender:
+Male
+Date of Birth:
+January 7, 1957
+Referring Physician:
+CHAN, CAROLINE
+Accession Number:
+3339609-CR
+Examination Date:
+July 27, 2026 08:43
+Report Status:
+Final
+Modality:
+CR
+ 
+Report for Computed Radiology
+X-RAY RIGHT KNEE
+HISTORY: Right medial pain after walking.
+REPORT:
+On weightbearing, there is preservation of the knee joint spaces. No significant subchondral sclerosis. There is osteophyte formation
+in the patellofemoral compartment. No acute fracture is seen.
+Radiologist: Dr K. Ho-Shon

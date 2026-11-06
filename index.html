@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob:; worker-src blob:; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>影像档案 / Medical archive</title>
+<style>
+:root{color-scheme:light;--ink:#203b3d;--muted:#758381;--line:#e2e8e5;--paper:#fff;--surface:#f6f8f6;--accent:#245d52;--accent-soft:#eaf2ee;--radius:12px;--header:76px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:96px}body{margin:0;background:var(--surface);color:var(--ink);font:14px/1.65 "Aptos","Segoe UI","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}html:lang(zh) body,[lang=zh]{font-family:"PingFang SC","Microsoft YaHei UI","Microsoft YaHei","Noto Sans CJK SC",sans-serif}html:lang(en) h1{letter-spacing:-.025em}button,input,select{font:inherit}button,a,input,select{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button,a{touch-action:manipulation}button{color:inherit}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}button:disabled{opacity:.35;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid #498673;outline-offset:3px}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.icon{width:18px;height:18px;display:inline-block;vertical-align:middle;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.icon-button{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:8px;background:var(--paper);flex-shrink:0}.icon-button:hover:not(:disabled){background:var(--accent-soft);border-color:#b9ccc2}.text-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font-size:12px;font-weight:600;white-space:nowrap}.text-button:hover{background:var(--accent-soft);border-color:#b9ccc2}.numeric{font-variant-numeric:tabular-nums}
+.app-header{height:var(--header);position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);background:rgba(255,255,255,.97)}.header-inner{height:100%;max-width:1760px;margin:auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:38px;height:38px;border:1px solid #bfd2c7;border-radius:11px;color:var(--accent);display:grid;place-items:center;background:var(--accent-soft);flex-shrink:0}.brand-mark .icon{width:22px;height:22px}.brand-copy{min-width:0}.brand-copy strong{display:block;font-size:17px;font-weight:600;line-height:1.45;white-space:nowrap}.brand-copy small{display:block;font-size:11px;line-height:1.6;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.header-actions{display:flex;align-items:center;gap:20px;flex-shrink:0}.privacy-label{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--muted)}.language-switch{display:flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}.language-switch button{border:0;border-radius:6px;background:transparent;padding:5px 12px;font-size:12px;color:#74817b;line-height:1.5}.language-switch button.active{background:#fff;color:var(--accent);box-shadow:0 1px 4px #203b3d14;font-weight:600}.mobile-toggle,.sidebar-close{display:none}
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);max-width:1760px;margin:auto;min-height:calc(100dvh - var(--header))}.sidebar{background:#fbfcfa;border-right:1px solid var(--line);position:sticky;top:var(--header);height:calc(100dvh - var(--header));display:flex;flex-direction:column;min-height:0}.sidebar-top{padding:24px 20px 14px;flex-shrink:0}.sidebar-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.sidebar-title h2{font-size:14px;margin:0;font-weight:600}.search-wrap{position:relative;margin-bottom:10px}.search-wrap>.icon{position:absolute;top:11px;left:11px;color:#8b9990;width:16px;height:16px}.search-wrap input{width:100%;height:39px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:7px 10px 7px 34px;font-size:12px;color:var(--ink)}input::placeholder{color:#8e9993}.filters{display:grid;grid-template-columns:1fr 1.5fr;gap:8px}.filter{min-width:0}.filter label{display:block;color:var(--muted);font-size:10px;margin-bottom:4px;line-height:1.5}.filter select{width:100%;height:35px;border:1px solid var(--line);border-radius:7px;background:#fff;color:#40574c;padding:5px 7px;font-size:12px;min-width:0}.filter.body-filter{grid-column:1/-1}.filter-footer{display:flex;align-items:center;justify-content:space-between;min-height:36px;margin-top:8px;gap:8px}.results-count{margin:0;color:var(--muted);font-size:11px}.reset-filters{border:0;padding:4px 0;background:transparent;font-size:11px;color:var(--accent)}.timeline{overflow:auto;overscroll-behavior:contain;padding:0 12px 24px;scrollbar-width:thin;min-height:0}.year-label{font-size:11px;letter-spacing:.06em;color:#8b978d;padding:16px 13px 8px;font-variant-numeric:tabular-nums}.year-label:first-child{padding-top:6px}.exam-card{position:relative;display:block;width:100%;text-align:left;border:1px solid transparent;background:transparent;padding:12px;margin:3px 0;border-radius:9px;line-height:1.5}.exam-card:hover{background:#f0f3ee}.exam-card.selected{background:var(--accent-soft);border-color:#d6e5db}.exam-card.selected:before{content:"";position:absolute;left:-1px;top:16px;bottom:16px;width:3px;border-radius:4px;background:var(--accent)}.exam-card time{display:block;color:#809087;font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:.015em}.exam-card .card-title{display:block;font-size:13px;font-weight:500;line-height:1.65;margin-top:4px;overflow-wrap:anywhere}.exam-card.selected .card-title{color:#244e42;font-weight:600}.card-bottom{display:flex;gap:10px;align-items:center;margin-top:6px;font-size:10px;color:#849087}.card-bottom span+span:before{content:"·";margin-right:10px;color:#b1bbb2}.no-results{color:var(--muted);padding:24px 12px;font-size:12px}.drawer-backdrop{display:none}
+.workspace{padding:32px 36px 22px;min-width:0}.exam-detail{outline:none}.detail-eyebrow{display:flex;gap:9px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:10px}.pill{display:inline-flex;align-items:center;line-height:1.6;border-radius:5px;padding:3px 8px;background:#e8eeea;color:#517060;font-size:10px;font-weight:500}.detail-header h1{margin:0;font-weight:600;font-size:25px;line-height:1.5;overflow-wrap:anywhere}.source-name{color:#8d978f;font-size:11px;margin:6px 0 0;letter-spacing:.02em;overflow-wrap:anywhere}.detail-caption{display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin:14px 0 0}.detail-caption span{display:inline-flex;align-items:center;gap:5px}.detail-caption .icon{width:14px;height:14px}.exam-metadata{margin-top:12px;font-size:11px;color:var(--muted)}.exam-metadata summary{cursor:pointer;width:max-content;max-width:100%;list-style:none;border-bottom:1px dotted #bdc9be}.exam-metadata summary::-webkit-details-marker{display:none}.exam-metadata summary:after{content:" +";padding-left:4px}.exam-metadata[open] summary:after{content:" −"}.metadata-grid{margin:12px 0 0;padding:16px;border:1px solid var(--line);border-radius:8px;background:#fdfefb;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 24px}.metadata-grid dt{color:#87938b;font-size:10px;margin-bottom:3px}.metadata-grid dd{margin:0;color:#52675a;overflow-wrap:anywhere;font-size:12px}.classification-note{margin:8px 0 0;color:#8a7752;font-size:11px}.tabs{display:flex;gap:28px;border-bottom:1px solid var(--line);margin:26px 0 22px}.tab{border:0;border-bottom:2px solid transparent;background:transparent;padding:0 1px 12px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}.tab[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}.tab-count{font-size:10px;line-height:1.5;border-radius:4px;padding:1px 5px;background:#e9ede7;color:#7a8a7b;font-weight:400}.report-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:20px}.pdf-card{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 3px 10px #263e2c03}.pdf-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 18px 15px;min-height:76px;border-bottom:1px solid #edf0ea}.pdf-head h3{margin:0;font-size:14px;font-weight:600;line-height:1.5}.pdf-head p{margin:3px 0 0;font-size:10px;line-height:1.5;color:var(--muted)}.pdf-head>.icon{width:21px;height:21px;color:#86a395}.pdf-card.translation .pdf-head>.icon{color:#a39778}.pdf-preview{position:relative;background:#e9ede8;height:clamp(340px,38vw,540px);display:flex;align-items:center;justify-content:center;padding:18px;cursor:zoom-in;overflow:hidden}.pdf-preview canvas{display:block;background:white;box-shadow:0 2px 9px #223a2526;flex-shrink:0;max-width:100%;max-height:100%}.preview-expand{position:absolute;bottom:13px;right:13px;border:1px solid #d5ded2;box-shadow:0 2px 6px #2438270a;background:#fffffff2;width:30px;height:30px;border-radius:7px;display:grid;place-items:center;opacity:0;transition:opacity .15s}.pdf-preview:hover .preview-expand,.pdf-preview:focus-visible .preview-expand{opacity:1}.pdf-status{position:absolute;inset:0;display:grid;align-content:center;justify-items:center;gap:10px;padding:24px;text-align:center;background:#edf0e9;color:#7b8c7d;font-size:12px;cursor:default}.pdf-status.error{color:#96523d}.pdf-status .icon{width:24px;height:24px}.loading-mark{width:19px;height:19px;border:2px solid #cedbcf;border-top-color:#5b8064;border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.pdf-toolbar{padding:11px 13px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;min-height:60px}.page-controls,.pdf-actions{display:flex;gap:5px;align-items:center}.page-controls .icon-button{width:30px;height:32px;border-color:#e7ece3;border-radius:6px}.page-count{min-width:38px;text-align:center;font-size:11px;color:#71806e;font-variant-numeric:tabular-nums}.pdf-actions .text-button{min-height:32px;padding:5px 9px;font-size:11px;border-color:#d9e3d6}.pdf-actions .text-button .icon{width:14px;height:14px}.pdf-link{font-size:10px;border:1px solid #e7ece3;border-radius:6px;display:inline-flex;align-items:center;gap:3px;padding:6px 7px;height:32px;color:#7e8d77;white-space:nowrap}.pdf-link .icon{width:12px;height:12px}.reference-notice{margin:15px 1px 0;color:#8b8b73;font-size:11px;line-height:1.8;display:flex;gap:7px;align-items:flex-start}.reference-notice .icon{width:14px;height:14px;margin-top:3px;flex-shrink:0}.pending-note{font-size:11px;color:#906b39;border-left:2px solid #ba9b57;padding-left:9px;margin:0 0 14px}.report-texts{margin-top:19px;border-top:1px solid var(--line);padding-top:13px;font-size:11px;color:#879184}.report-texts summary,.technical summary{cursor:pointer;width:max-content;max-width:100%}.text-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px}.text-pair h3{font-size:12px;font-weight:600;color:#56694e;margin:0 0 8px}.text-pair pre{font:12px/1.9 "Aptos","Segoe UI",sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;margin:0;color:#63725a}.text-pair pre[lang=zh]{font-family:"PingFang SC","Microsoft YaHei",sans-serif}.text-links{display:flex;gap:12px;font-size:11px;margin-top:14px}.empty-state{min-height:230px;border:1px dashed #dbe3d6;border-radius:var(--radius);padding:42px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#88917b;gap:13px;background:#fcfdf9}.empty-state p{margin:0;max-width:440px;font-size:13px}.empty-state>.icon{width:30px;height:30px;color:#b0bba4}.gallery-intro{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:20px}.gallery-intro p{margin:0;color:var(--muted);font-size:12px;max-width:640px;line-height:1.85}.series-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.series-card{padding:0;text-align:left;border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden;transition:border-color .15s,box-shadow .15s;min-width:0}.series-card:hover{border-color:#a8c3ad;box-shadow:0 3px 13px #344d3012}.series-cover{aspect-ratio:4/3;background:#141a17;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}.series-cover img{display:block;width:100%;height:100%;object-fit:contain;opacity:.94}.series-count{position:absolute;right:10px;bottom:10px;background:#18231bc9;color:#dfe9dc;font-size:10px;padding:3px 7px;border-radius:4px;font-variant-numeric:tabular-nums}.series-info{padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}.series-info strong{display:block;font-size:12px;font-weight:600}.series-info small{display:block;color:#8a9783;font-size:10px;margin-top:3px}.series-info>.icon{color:#87a17d;width:16px;height:16px}.technical{margin-top:24px;padding-top:15px;border-top:1px solid var(--line);color:#829176;font-size:11px}.technical p{font-size:11px;line-height:1.85;max-width:850px;margin:10px 0 0}.archive-footer{margin:30px 0 0;padding-top:17px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:24px;font-size:10px;color:#94a08b}.archive-footer details{max-width:720px}.archive-footer summary{cursor:pointer}.archive-footer p{margin:9px 0;line-height:1.9}.export-stamp{white-space:nowrap;text-align:right;font-size:10px;color:#9aa68f}.incomplete-banner{padding:12px 20px;background:#fff1d2;color:#8b641f;text-align:center;font-size:12px}
+.viewer{padding:0;border:0;width:100%;max-width:none;height:100dvh;max-height:none;inset:0;margin:0;background:#111917;color:#dbe4de;overflow:hidden}.viewer::backdrop{background:#111917}.viewer-inner{height:100%;display:flex;flex-direction:column;min-height:0;padding-top:env(safe-area-inset-top)}.viewer-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;border-bottom:1px solid #ffffff13;flex-shrink:0;min-height:76px}.viewer-title{min-width:0}.viewer-title strong{display:block;font-size:14px;font-weight:500;line-height:1.5;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.viewer-title small{display:block;font-size:10px;color:#899a8d;margin-top:3px;line-height:1.5}.viewer-top-actions{display:flex;gap:9px;align-items:center;flex-shrink:0}.viewer .icon-button,.viewer .text-button{background:#1b2922;border-color:#ffffff20;color:#d1ddcf}.viewer .icon-button:hover:not(:disabled),.viewer .text-button:hover{background:#2b3d2c}.viewer .icon-button{width:36px;height:36px}.viewer .icon-button .icon{width:17px;height:17px}.media-stage{position:relative;flex:1;min-height:0;min-width:0}.image-stage{display:flex;justify-content:center;align-items:center;overflow:hidden;touch-action:none;user-select:none;background:#080e0b}.image-stage img{display:block;max-width:100%;max-height:100%;object-fit:contain;transform-origin:center;will-change:transform;pointer-events:none}.image-stage.zoomed{cursor:grab}.image-stage.zoomed:active{cursor:grabbing}.frame-badge{position:absolute;top:14px;left:20px;background:#101b12bf;border:1px solid #ffffff13;border-radius:5px;font-size:10px;color:#b9cab7;padding:4px 8px;font-variant-numeric:tabular-nums;pointer-events:none}.pdf-stage{overflow:auto;overscroll-behavior:contain;background:#354039;touch-action:pan-x pan-y pinch-zoom}.pdf-sheet{min-width:100%;min-height:100%;width:max-content;display:flex;align-items:center;justify-content:center;padding:22px}.pdf-sheet canvas{background:#fff;display:block;box-shadow:0 5px 30px #0005;flex-shrink:0}.viewer-error{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#152019ed;color:#d9b5a2;padding:35px;text-align:center;font-size:13px;z-index:2;pointer-events:none}.viewer-loading{position:absolute;inset:0;display:grid;place-items:center;background:#354039bb;z-index:1;pointer-events:none}.viewer-bottom{padding:13px 24px calc(11px + env(safe-area-inset-bottom));border-top:1px solid #ffffff13;background:#142019;flex-shrink:0}.frame-slider{display:block;width:100%;height:16px;margin:0 0 12px;accent-color:#84b08a;cursor:pointer}.viewer-tools{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 20px}.tool-group{display:flex;align-items:center;gap:7px;min-width:0}.viewer .page-count{color:#b4c7af;font-size:12px;min-width:54px}.viewer select{max-width:230px;min-width:0;background:#203026;border:1px solid #ffffff22;border-radius:7px;color:#bfd0b9;padding:7px 9px;font-size:11px;height:35px}.viewer label,.zoom-label{font-size:11px;color:#9fb396}.zoom-label{font-variant-numeric:tabular-nums;min-width:43px;text-align:center}.viewer .play-button{min-width:64px;color:#cae2c2;border-color:#70906c80}.viewer .play-button.active{background:#2b5332}.source-switch{display:flex;gap:3px;padding:3px;border:1px solid #ffffff20;border-radius:8px;background:#101b14}.source-switch button{border:0;border-radius:5px;background:transparent;color:#899f80;font-size:11px;padding:5px 11px;white-space:nowrap;min-height:28px}.source-switch button[aria-pressed=true]{background:#2b3c2b;color:#dce9d5}.viewer-download{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:5px 8px;color:#a6c59b;font-size:11px;white-space:nowrap}.viewer-download .icon{width:15px;height:15px}.viewer-hint{margin:11px 0 0;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;line-height:1.7;color:#6f8665}.viewer-note{margin:3px 0 0;font-size:9px;color:#637c58;line-height:1.7}.viewer-status{margin:5px 0 0;font-size:10px;color:#d2c59d}.viewer-status:empty{display:none}.zoom-group{margin-left:auto}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#203a2b;color:#f1f5ee;padding:10px 18px;border-radius:8px;box-shadow:0 4px 18px #0002;font-size:12px;z-index:1000;max-width:calc(100vw - 32px);width:max-content;text-align:center}
+.viewer-inner:fullscreen{width:100vw;height:100dvh;background:#111917}
+.pdf-cover{display:block;max-width:100%;max-height:100%;object-fit:contain;background:#fff;box-shadow:0 2px 9px #223a2526}.cover-label{position:absolute;left:13px;bottom:13px;padding:3px 7px;border-radius:4px;background:#ffffffed;color:#6b7e6a;font-size:10px;pointer-events:none}.load-on-open{margin:0 0 15px;color:var(--muted);font-size:11px;line-height:1.8}.text-status{font-size:11px;color:var(--muted)}.text-status.error{color:#96523d}
+.search-wrap>[data-icon]{position:absolute;top:11px;left:11px;display:flex;color:#8b9990}.search-wrap>[data-icon] .icon{width:16px;height:16px}
+@media(min-width:1500px){.workspace{padding:36px 44px 24px}.series-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1180px){.shell{grid-template-columns:270px minmax(0,1fr)}.sidebar-top{padding:22px 16px 12px}.filters{grid-template-columns:1fr}.filter.body-filter{grid-column:auto}.filter label{display:none}.workspace{padding:26px 24px 20px}.report-pair{gap:14px}.pdf-head{padding:14px}.pdf-head h3{font-size:13px}.pdf-preview{padding:13px;height:430px}.pdf-toolbar{padding:10px;gap:8px}.pdf-actions{gap:4px}.pdf-actions .text-button{padding:5px 7px}.series-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.privacy-label{display:none}.archive-footer{flex-direction:column;gap:10px}.export-stamp{text-align:left}}
+@media(min-width:861px) and (max-width:1000px){.report-pair{grid-template-columns:1fr}.pdf-preview{height:580px}.pdf-toolbar{padding:12px 16px}.pdf-head{padding:16px 18px}}
+@media(max-width:860px){:root{--header:66px}.header-inner{padding:0 22px;gap:12px}.header-actions{gap:10px}.brand-mark{width:33px;height:33px;border-radius:9px}.brand-copy strong{font-size:16px}.brand-copy small{font-size:10px}.shell{display:block}.sidebar{position:fixed;z-index:50;top:var(--header);left:0;width:min(336px,calc(100vw - 30px));height:calc(100dvh - var(--header));transform:translateX(-101%);transition:transform .2s ease;border-right:1px solid #d7e1d3;box-shadow:8px 0 32px #25392718}.sidebar.open{transform:translateX(0)}.sidebar-top{padding:23px 20px 10px}.sidebar-close,.mobile-toggle{display:inline-flex}.sidebar-close{width:29px;height:29px;border:0;background:transparent}.filters{grid-template-columns:1fr 1.5fr}.filter label{display:block}.filter.body-filter{grid-column:1/-1}.drawer-backdrop.visible{display:block;position:fixed;inset:var(--header) 0 0;border:0;z-index:45;background:#233b2b55;backdrop-filter:blur(2px);cursor:default}.workspace{padding:28px 28px 20px}.detail-header h1{font-size:24px}.pdf-preview{height:470px}.report-pair{gap:16px}.series-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.viewer-top{padding:13px 18px;min-height:70px}.viewer-bottom{padding:12px 18px calc(10px + env(safe-area-inset-bottom))}.viewer-tools{gap:10px 14px}.viewer-hint{font-size:9px}.viewer-note{font-size:9px}.viewer .image-downloads{margin-left:auto}}
+@media(max-width:600px){.header-inner{padding:0 16px}.brand{gap:9px}.brand-copy strong{font-size:15px}.header-actions{gap:8px}.language-switch button{padding:5px 9px;font-size:11px}.brand-mark{width:31px;height:31px}.mobile-toggle{width:33px;height:33px}.workspace{padding:24px 18px 18px}.detail-eyebrow{font-size:11px;margin-bottom:9px;gap:7px}.detail-header h1{font-size:21px}.source-name{font-size:10px;line-height:1.7}.detail-caption{gap:9px 16px;margin-top:12px;font-size:10px}.tabs{margin:23px 0 18px;gap:26px}.tab{font-size:12px;padding-bottom:11px}.report-pair{grid-template-columns:1fr;gap:18px}.pdf-head{min-height:72px;padding:15px 16px}.pdf-head h3{font-size:14px}.pdf-preview{height:calc((100vw - 72px)*1.414 + 24px);max-height:640px;padding:15px}.preview-expand{opacity:1}.pdf-toolbar{padding:11px 13px;min-height:59px}.pdf-actions .text-button{padding:5px 10px}.pdf-link{padding:6px 9px}.reference-notice{font-size:10px;line-height:1.9;margin-top:14px}.text-pair{grid-template-columns:1fr;gap:24px}.text-pair pre{font-size:12px}.report-texts{font-size:10px}.metadata-grid{gap:14px;padding:13px}.metadata-grid dd{font-size:11px}.gallery-intro p{font-size:11px}.series-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.series-info{padding:10px 11px}.series-info strong{font-size:11px}.series-info small{font-size:9px}.series-count{font-size:9px;right:7px;bottom:7px}.viewer-top{padding:12px 12px;gap:10px;min-height:68px}.viewer-title strong{font-size:12px}.viewer-title small{font-size:9px}.viewer-top-actions{gap:6px}.viewer .icon-button{width:33px;height:33px;border-radius:6px}.viewer-bottom{padding:10px 12px calc(9px + env(safe-area-inset-bottom))}.viewer-tools{gap:10px 8px;justify-content:flex-start}.viewer .play-button{min-width:53px;padding:5px 9px}.tool-group{gap:5px}.viewer select{height:33px;padding:5px 6px;font-size:10px;max-width:170px}.zoom-label{font-size:10px;min-width:37px}.viewer .text-button{padding:5px 9px;font-size:10px;min-height:33px}.zoom-group{margin-left:auto}.source-switch button{padding:4px 8px;font-size:10px}.viewer .page-count{font-size:11px;min-width:44px}.pdf-page-tools{margin-left:auto}.pdf-zoom-tools{margin-left:0}.viewer-download{font-size:10px;padding:5px 7px;min-height:30px}.viewer .image-downloads{margin-left:auto}.viewer-hint{margin-top:8px;line-height:1.6;font-size:9px;display:block}.viewer-note{font-size:8px;line-height:1.6}.viewer-status{font-size:9px}.frame-badge{top:10px;left:12px;font-size:9px}.pdf-sheet{padding:12px}.frame-slider{margin-bottom:9px}.archive-footer{margin-top:24px;font-size:9px}.export-stamp{font-size:9px}}
+@media(max-width:360px){.header-inner{padding:0 12px;gap:8px}.brand-copy strong{font-size:14px}.brand-copy small{font-size:9px}.brand{gap:7px}.language-switch button{padding:5px 7px}.header-actions{gap:6px}.workspace{padding:21px 14px 16px}.pdf-preview{height:calc((100vw - 64px)*1.414 + 24px)}.pdf-toolbar{padding:10px}.pdf-actions .text-button{padding:5px 7px;font-size:10px}.pdf-link{padding:5px 6px}.pdf-head{padding:14px}.detail-header h1{font-size:20px}.viewer .zoom-group{margin-left:0}.viewer .image-downloads{margin-left:0}.viewer select{max-width:155px}.viewer .tool-group{gap:4px}.series-grid{gap:10px}.series-info{padding:9px}.series-info>.icon{width:13px}.series-info small{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+@media print{.app-header,.sidebar,.tabs,.archive-footer,.pdf-toolbar,.preview-expand,.report-texts,.reference-notice,.source-name{display:none!important}.shell{display:block}.workspace{padding:0}.report-pair{display:block}.pdf-card{break-inside:avoid;margin-bottom:24px}.pdf-preview{height:700px}.pdf-card{box-shadow:none}.detail-header h1{font-size:20px}.images-section{display:none!important}}
+</style>
+</head>
+<body>
+<header class="app-header"><div class="header-inner">
+  <div class="brand"><div class="brand-mark" data-icon="archive"></div><div class="brand-copy"><strong data-i18n="brand"></strong><small id="patient-name"></small></div></div>
+  <div class="header-actions"><span class="privacy-label"><span data-icon="lock"></span><span data-i18n="privateData"></span></span><div class="language-switch" role="group" aria-label="Language / 语言"><button id="lang-zh" type="button" lang="zh">中文</button><button id="lang-en" type="button" lang="en">English</button></div><button id="mobile-timeline" type="button" class="icon-button mobile-toggle" aria-controls="sidebar" aria-expanded="false"><span data-icon="list"></span><span class="sr-only" data-i18n="timeline"></span></button></div>
+</div></header>
+<div id="incomplete-banner" class="incomplete-banner" data-i18n="incomplete" hidden></div>
+<button id="drawer-backdrop" class="drawer-backdrop" type="button" tabindex="-1" aria-label="Close / 关闭"></button>
+<div class="shell">
+  <aside class="sidebar" id="sidebar" aria-labelledby="timeline-heading">
+    <div class="sidebar-top">
+      <div class="sidebar-title"><h2 id="timeline-heading" data-i18n="timeline"></h2><button id="close-sidebar" class="icon-button sidebar-close" type="button"><span data-icon="close"></span><span class="sr-only" data-i18n="close"></span></button></div>
+      <div class="search-wrap"><span data-icon="search"></span><label for="search" class="sr-only" data-i18n="search"></label><input id="search" type="search" autocomplete="off"></div>
+      <div class="filters">
+        <div class="filter"><label for="year-filter" data-i18n="year"></label><select id="year-filter"></select></div>
+        <div class="filter"><label for="modality-filter" data-i18n="modality"></label><select id="modality-filter"></select></div>
+        <div class="filter body-filter"><label for="body-filter" data-i18n="bodyPart"></label><select id="body-filter"></select></div>
+      </div>
+      <div class="filter-footer"><p id="results-count" class="results-count" aria-live="polite"></p><button id="reset-filters" type="button" class="reset-filters" data-i18n="resetFilters" hidden></button></div>
+    </div>
+    <nav id="timeline" class="timeline" aria-label="Examinations / 检查记录"></nav>
+  </aside>
+  <main class="workspace">
+    <div id="empty-search" class="empty-state" hidden><span data-icon="search"></span><p data-i18n="noResults"></p></div>
+    <div id="exam-detail" class="exam-detail" tabindex="-1"></div>
+    <footer class="archive-footer">
+      <details><summary data-i18n="privacyTitle"></summary><p data-i18n="privacy"></p><p data-i18n="offlineHelp"></p></details>
+      <div id="export-time" class="export-stamp"></div>
+    </footer>
+  </main>
+</div>
+<dialog id="viewer" class="viewer" aria-labelledby="viewer-title" aria-describedby="viewer-subtitle">
+  <div class="viewer-inner">
+    <header class="viewer-top"><div class="viewer-title"><strong id="viewer-title"></strong><small id="viewer-subtitle"></small></div><div class="viewer-top-actions"><button id="system-fullscreen" type="button" class="icon-button"><span data-icon="expand"></span><span class="sr-only" data-i18n="systemFullscreen"></span></button><button id="close-viewer" type="button" class="icon-button"><span data-icon="close"></span><span class="sr-only" data-i18n="close"></span></button></div></header>
+    <div id="image-stage" class="media-stage image-stage" tabindex="0" aria-label="Image viewport / 影像区域"><img id="viewer-image" alt="" draggable="false"><span id="frame-badge" class="frame-badge" aria-live="off"></span><div id="image-error" class="viewer-error" role="alert" hidden></div></div>
+    <div id="pdf-stage" class="media-stage pdf-stage" hidden><div class="pdf-sheet"><canvas id="viewer-pdf"></canvas></div><div id="pdf-loading" class="viewer-loading"><span class="loading-mark"></span></div><div id="pdf-error" class="viewer-error" role="alert" hidden></div></div>
+    <div class="viewer-bottom">
+      <label for="frame-slider" class="sr-only" id="slider-label"></label><input id="frame-slider" class="frame-slider" type="range" min="1" max="1" value="1" step="1">
+      <div id="image-tools" class="viewer-tools">
+        <div class="tool-group"><button id="previous-frame" type="button" class="icon-button"><span data-icon="previous"></span><span class="sr-only" data-i18n="previousFrame"></span></button><button id="play" type="button" class="text-button play-button" aria-pressed="false" data-i18n="play"></button><button id="next-frame" type="button" class="icon-button"><span data-icon="next"></span><span class="sr-only" data-i18n="nextFrame"></span></button><label for="speed" class="sr-only" data-i18n="speed"></label><select id="speed"><option value="1">1 fps</option><option value="3">3 fps</option><option value="5" selected>5 fps</option><option value="10">10 fps</option><option value="15">15 fps</option></select></div>
+        <div class="tool-group zoom-group"><button id="zoom-out" type="button" class="icon-button"><span data-icon="minus"></span><span class="sr-only" data-i18n="zoomOut"></span></button><span id="zoom-label" class="zoom-label">100%</span><button id="zoom-in" type="button" class="icon-button"><span data-icon="plus"></span><span class="sr-only" data-i18n="zoomIn"></span></button><button id="reset-zoom" type="button" class="text-button" data-i18n="fit"></button></div>
+        <div class="tool-group image-downloads"><label for="series-picker" class="sr-only" data-i18n="series"></label><select id="series-picker"></select><a id="download-frame" class="viewer-download" download><span data-icon="download"></span>PNG</a><a id="download-native" class="viewer-download" download data-i18n="nativeFrame"></a></div>
+      </div>
+      <div id="pdf-tools" class="viewer-tools" hidden>
+        <div class="source-switch" role="group" aria-label="Report language / 报告语言"><button id="pdf-source-original" type="button" data-i18n="original"></button><button id="pdf-source-translation" type="button" data-i18n="translation"></button></div>
+        <div class="tool-group pdf-page-tools"><button id="previous-page" type="button" class="icon-button"><span data-icon="previous"></span><span class="sr-only" data-i18n="previousPage"></span></button><span id="pdf-page-count" class="page-count"></span><button id="next-page" type="button" class="icon-button"><span data-icon="next"></span><span class="sr-only" data-i18n="nextPage"></span></button></div>
+        <div class="tool-group pdf-zoom-tools"><button id="pdf-zoom-out" type="button" class="icon-button"><span data-icon="minus"></span><span class="sr-only" data-i18n="zoomOut"></span></button><span id="pdf-zoom-label" class="zoom-label">100%</span><button id="pdf-zoom-in" type="button" class="icon-button"><span data-icon="plus"></span><span class="sr-only" data-i18n="zoomIn"></span></button><button id="pdf-fit" type="button" class="text-button" data-i18n="fit"></button><a id="download-pdf" class="viewer-download" download><span data-icon="download"></span>PDF</a></div>
+      </div>
+      <p class="viewer-hint" id="viewer-hint"></p><p class="viewer-note" id="viewer-note"></p><p id="viewer-status" class="viewer-status" role="status"></p>
+    </div>
+  </div>
+</dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+<script id="archive-data" type="application/json">{"uiVersion":3,"pdfRendererVersion":"6.5.438","patientName":"WANG, DONGPING","exportedAt":"2026-11-06T15:20:57+08:00","reportCount":4,"seriesCount":27,"frameCount":2207,"downloadComplete":true,"exams":[{"id":"3362266-MR","date":"2026-10-26","description":"MRI - KNEE - RIGHT","titleZh":"右膝磁共振","modality":"MR","displayModality":"MR","bodyPart":"knee","referrer":"LIN, CHARLIE","organization":"MMI","reports":[{"pdf":"exams/2026-10-26_3362266-MR/report-01-original.pdf","originalTxt":"exams/2026-10-26_3362266-MR/report-01-original.txt","translationPdf":"exams/2026-10-26_3362266-MR/report-01-zh-reference.pdf","translationTxt":"exams/2026-10-26_3362266-MR/report-01-zh-reference.txt","pendingAddendum":false,"pageCount":1,"cover":"assets/report-covers/3362266-MR-01-original.webp","pdfSha256":"90a086c94a738ea856701a0db79e71d115450c1dc1a09f1bf5e185bfb9742ea9","pdfData":"exams/2026-10-26_3362266-MR/report-01-original.pdf.data.js","translationPageCount":2,"translationCover":"assets/report-covers/3362266-MR-01-translation.webp","translationPdfSha256":"d6fcfd4086e179008d46916a9ce7aa7d234804db4dd14eada2c600d76d2d3497","translationPdfData":"exams/2026-10-26_3362266-MR/report-01-zh-reference.pdf.data.js","textData":"exams/2026-10-26_3362266-MR/report-01-original.text.data.js"}],"series":[{"thumbnail":"assets/thumbnails/3362266-MR-001.webp","thumbnailFrame":1,"folder":"exams/2026-10-26_3362266-MR/series-001","frameCount":60,"sopCount":60,"modality":"MR","studyUID":"1.2.840.114202.4.649814718.2280997335.20730779.2593314730","seriesUID":"1.3.12.2.1107.5.2.51.186601.30000026102607102850700006301","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3362266-MR-002.webp","thumbnailFrame":1,"folder":"exams/2026-10-26_3362266-MR/series-002","frameCount":46,"sopCount":46,"modality":"MR","studyUID":"1.2.840.114202.4.649814718.2280997335.20730779.2593314730","seriesUID":"1.3.12.2.1107.5.2.51.186601.30000026102607102850700006425","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3362266-MR-003.webp","thumbnailFrame":1,"folder":"exams/2026-10-26_3362266-MR/series-003","frameCount":46,"sopCount":46,"modality":"MR","studyUID":"1.2.840.114202.4.649814718.2280997335.20730779.2593314730","seriesUID":"1.3.12.2.1107.5.2.51.186601.30000026102607102850700006521","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3362266-MR-004.webp","thumbnailFrame":1,"folder":"exams/2026-10-26_3362266-MR/series-004","frameCount":48,"sopCount":48,"modality":"MR","studyUID":"1.2.840.114202.4.649814718.2280997335.20730779.2593314730","seriesUID":"1.3.12.2.1107.5.2.51.186601.30000026102607102850700006617","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3362266-MR-005.webp","thumbnailFrame":1,"folder":"exams/2026-10-26_3362266-MR/series-005","frameCount":48,"sopCount":48,"modality":"MR","studyUID":"1.2.840.114202.4.649814718.2280997335.20730779.2593314730","seriesUID":"1.3.12.2.1107.5.2.51.186601.30000026102607102850700006717","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3362266-MR-006.webp","thumbnailFrame":1,"folder":"exams/2026-10-26_3362266-MR/series-006","frameCount":60,"sopCount":60,"modality":"MR","studyUID":"1.2.840.114202.4.649814718.2280997335.20730779.2593314730","seriesUID":"1.3.12.2.1107.5.2.51.186601.30000026102607102850700006817","nativeExportFrames":[]}]},{"id":"3339609-CR","date":"2026-07-27","description":"XRAY - KNEE - RIGHT","titleZh":"右膝X线","modality":"CR","displayModality":"XR","bodyPart":"knee","referrer":"CHAN, CAROLINE","organization":"MMI","reports":[{"pdf":"exams/2026-07-27_3339609-CR/report-01-original.pdf","originalTxt":"exams/2026-07-27_3339609-CR/report-01-original.txt","translationPdf":"exams/2026-07-27_3339609-CR/report-01-zh-reference.pdf","translationTxt":"exams/2026-07-27_3339609-CR/report-01-zh-reference.txt","pendingAddendum":false,"pageCount":1,"cover":"assets/report-covers/3339609-CR-01-original.webp","pdfSha256":"7c33a02222124a03f841fb7792f8694bddf028de903d20fde1c4bbd83d8dfe9d","pdfData":"exams/2026-07-27_3339609-CR/report-01-original.pdf.data.js","translationPageCount":1,"translationCover":"assets/report-covers/3339609-CR-01-translation.webp","translationPdfSha256":"cf54ca05d0825ab2699aab29e3addf7115a8cc776a51a960df7dbb815f7c2011","translationPdfData":"exams/2026-07-27_3339609-CR/report-01-zh-reference.pdf.data.js","textData":"exams/2026-07-27_3339609-CR/report-01-original.text.data.js"}],"series":[{"thumbnail":"assets/thumbnails/3339609-CR-001.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339609-CR/series-001","frameCount":1,"sopCount":1,"modality":"CR","studyUID":"1.2.840.114202.4.3894238550.1772431558.3188683978.3819236873","seriesUID":"1.2.840.113619.2.485.4.8323328.1785105930.184380.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339609-CR-002.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339609-CR/series-002","frameCount":1,"sopCount":1,"modality":"CR","studyUID":"1.2.840.114202.4.3894238550.1772431558.3188683978.3819236873","seriesUID":"1.2.840.113619.2.485.4.8323328.1785105930.184380.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339609-CR-003.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339609-CR/series-003","frameCount":1,"sopCount":1,"modality":"CR","studyUID":"1.2.840.114202.4.3894238550.1772431558.3188683978.3819236873","seriesUID":"1.2.840.113619.2.485.4.8323328.1785105930.184380.3","nativeExportFrames":[0]},{"thumbnail":"assets/thumbnails/3339609-CR-004.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339609-CR/series-004","frameCount":1,"sopCount":1,"modality":"CR","studyUID":"1.2.840.114202.4.3894238550.1772431558.3188683978.3819236873","seriesUID":"1.2.840.113619.2.485.4.8323328.1785105930.336239.1","nativeExportFrames":[]}]},{"id":"3339608-CT","date":"2026-07-27","description":"CT -  KNEE - RIGHT","titleZh":"右膝CT","modality":"CT","displayModality":"CT","bodyPart":"knee","referrer":"CHAN, CAROLINE","organization":"MMI","reports":[{"pdf":"exams/2026-07-27_3339608-CT/report-01-original.pdf","originalTxt":"exams/2026-07-27_3339608-CT/report-01-original.txt","translationPdf":"exams/2026-07-27_3339608-CT/report-01-zh-reference.pdf","translationTxt":"exams/2026-07-27_3339608-CT/report-01-zh-reference.txt","pendingAddendum":false,"pageCount":1,"cover":"assets/report-covers/3339608-CT-01-original.webp","pdfSha256":"f77e00129313450346f97f8eecd89ca4cae22d783ccf0a45aabd9ab1ce8b72bc","pdfData":"exams/2026-07-27_3339608-CT/report-01-original.pdf.data.js","translationPageCount":1,"translationCover":"assets/report-covers/3339608-CT-01-translation.webp","translationPdfSha256":"7e8af003505b6632abd0923b3cea2692ff401a207a435d73ea53e0b262e57990","translationPdfData":"exams/2026-07-27_3339608-CT/report-01-zh-reference.pdf.data.js","textData":"exams/2026-07-27_3339608-CT/report-01-original.text.data.js"}],"series":[{"thumbnail":"assets/thumbnails/3339608-CT-001.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-001","frameCount":689,"sopCount":689,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.416.62113312706672715244244987147539104233","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339608-CT-002.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-002","frameCount":72,"sopCount":72,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.80.3401895136.34791.1785108507.1.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339608-CT-003.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-003","frameCount":72,"sopCount":72,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.80.3401895136.34791.1785108545.74.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339608-CT-004.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-004","frameCount":56,"sopCount":56,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.80.3401895136.34791.1785108608.147.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339608-CT-005.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-005","frameCount":56,"sopCount":56,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.80.3401895136.34791.1785108618.204.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339608-CT-006.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-006","frameCount":47,"sopCount":47,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.80.3401895136.34791.1785108671.261.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339608-CT-007.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-007","frameCount":47,"sopCount":47,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.80.3401895136.34791.1785108683.309.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3339608-CT-008.webp","thumbnailFrame":1,"folder":"exams/2026-07-27_3339608-CT/series-008","frameCount":1,"sopCount":1,"modality":"CT","studyUID":"1.2.840.114202.4.402562845.2082878928.2282759389.3485370006","seriesUID":"1.2.840.113619.2.416.110504511086614101915682526752356328799","nativeExportFrames":[]}]},{"id":"3312736-CT","date":"2026-04-01","description":"CT - THORACIC AORTOGRAM","titleZh":"胸主动脉CT血管造影","modality":"CT","displayModality":"CT","bodyPart":"chest","referrer":"YAN, TRISTAN","organization":"MMI","reports":[{"pdf":"exams/2026-04-01_3312736-CT/report-01-original.pdf","originalTxt":"exams/2026-04-01_3312736-CT/report-01-original.txt","translationPdf":"exams/2026-04-01_3312736-CT/report-01-zh-reference.pdf","translationTxt":"exams/2026-04-01_3312736-CT/report-01-zh-reference.txt","pendingAddendum":false,"pageCount":2,"cover":"assets/report-covers/3312736-CT-01-original.webp","pdfSha256":"cf9a4f0cf85a5e697345f79175f6a0c398cfd54f8046f1f219a70e7049c25c9f","pdfData":"exams/2026-04-01_3312736-CT/report-01-original.pdf.data.js","translationPageCount":2,"translationCover":"assets/report-covers/3312736-CT-01-translation.webp","translationPdfSha256":"c539d742e67686b30c36684e05793e35805834fc58fa8f1f7a89fea0ecc7b3e9","translationPdfData":"exams/2026-04-01_3312736-CT/report-01-zh-reference.pdf.data.js","textData":"exams/2026-04-01_3312736-CT/report-01-original.text.data.js"}],"series":[{"thumbnail":"assets/thumbnails/3312736-CT-001.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-001","frameCount":109,"sopCount":109,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.416.113761430469264956870592481825029003751","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-002.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-002","frameCount":109,"sopCount":109,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.416.157061776215435276739524531190178991647","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-003.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-003","frameCount":436,"sopCount":436,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.416.67196432911803773625770129191803763771","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-004.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-004","frameCount":56,"sopCount":56,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.80.1124675353.2012.1775016188.14.5.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-005.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-005","frameCount":34,"sopCount":34,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.80.1124675353.7913.1775016252.1.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-006.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-006","frameCount":53,"sopCount":53,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.80.1124675353.7913.1775016264.36.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-007.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-007","frameCount":48,"sopCount":48,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.80.1124675353.7913.1775016314.90.4.1","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-008.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-008","frameCount":1,"sopCount":1,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.416.176132416104772294701568317014591671644","nativeExportFrames":[]},{"thumbnail":"assets/thumbnails/3312736-CT-009.webp","thumbnailFrame":1,"folder":"exams/2026-04-01_3312736-CT/series-009","frameCount":9,"sopCount":9,"modality":"CT","studyUID":"1.2.840.114202.4.2635614823.1902421945.566308358.1766997231","seriesUID":"1.2.840.113619.2.377.88495369039641.30862.1775016168873.219","nativeExportFrames":[]}]}],"scopeYear":2026}</script>
+<script>
+"use strict";
+const archive=JSON.parse(document.getElementById("archive-data").textContent);
+const $=id=>document.getElementById(id);
+const icons={
+  archive:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 3v18M8 8h13M12 12h5m-5 4h5"/>',
+  lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
+  list:'<path d="M9 5h11M9 12h11M9 19h11M4 5h.01M4 12h.01M4 19h.01"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>',
+  close:'<path d="m6 6 12 12M6 18 18 6"/>',
+  document:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8m-8 4h6"/>',
+  translate:'<path d="M3 5h12M9 3v2m4 0c-1 6-4 9-9 12m1-9c2 4 5 7 9 9m-1 4 4-11 4 11m-6-4h5"/>',
+  expand:'<path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/>',
+  external:'<path d="M14 3h7v7m0-7L10 14M10 4H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-5"/>',
+  previous:'<path d="m14 6-6 6 6 6"/>',
+  next:'<path d="m10 6 6 6-6 6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
+  download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/>',
+  image:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m21 15-6-6L3 21"/>'
+};
+const icon=name=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${icons[name]}</svg>`;
+function renderIcons(root=document){root.querySelectorAll("[data-icon]").forEach(node=>{node.innerHTML=icon(node.dataset.icon);});}
+const words={
+  zh:{
+    brand:"影像档案",privateData:"含个人医疗信息",timeline:"检查记录",search:"搜索检查名称、日期或编号",year:"年份",modality:"检查类型",bodyPart:"检查部位",
+    allYears:"全部年份",allModalities:"全部类型",allBodies:"全部部位",resetFilters:"清除筛选",found:"条记录",noResults:"没有符合筛选条件的检查。",exams:"次检查",reports:"份报告",series:"组影像",frames:"帧",set:"序列",
+    modalities:{CT:"CT · 计算机断层",MR:"MRI · 磁共振",US:"超声",XR:"X线摄影"},
+    bodies:{knee:"膝关节",chest:"胸部",abdomen:"腹部",urinary:"泌尿系统",neck:"颈部",hand:"手部",unspecified:"未标注"},
+    reportTab:"检查报告",imageTab:"影像",metadata:"检查信息",accession:"检查编号",referrer:"转诊医生",organization:"医疗机构",sourceModality:"门户原始类型",sourceDescription:"原始检查名称",noValue:"原文未提供",
+    classificationNote:"本条筛选类型按检查名称归为X线；门户原始类型保留为 CT，未修改原始记录。",
+    original:"英文原件",translation:"中文参考译文",originalSub:"医疗机构出具 · 原始 PDF",translationSub:"系统翻译 · 仅供参考 · 非原件",fullscreen:"全屏查看",openPdf:"打开真实 PDF 文件",close:"关闭",
+    loading:"正在读取 PDF 原件…",loadingTranslation:"正在读取中文参考 PDF…",pdfError:"PDF 预览失败。请使用下方 PDF 链接打开原文件。",renderingError:"无法渲染此 PDF 页面。",
+    firstPage:"首页封面",firstFrame:"第一帧",loadOnOpen:"当前仅加载小封面；点击后才读取完整 PDF 或当前影像帧。未打开的资料不会下载。",
+    coverError:"封面无法读取，请打开 PDF 查看原文件。",textLoading:"正在读取正文…",textError:"正文无法读取，请使用 TXT 链接打开原文件。",
+    referenceNotice:"英文 PDF 为医疗机构原件；中文为系统翻译，仅供参考，未经医生审校。如有歧义，以英文原件及医生解释为准。",
+    copyableText:"查看可复制正文（英文与中文）",originalTxt:"英文全文 TXT",translationTxt:"中文译文 TXT",noReport:"门户未提供此项目的可下载报告。未将其误标为报告下载成功。",noImages:"门户未返回此项目的影像，未以其他检查图像代替。",pending:"原件标记为待补充报告",
+    galleryHint:"每个集合对应一组影像。全屏打开后可滚动、滑动或播放逐帧浏览；可随时暂停、放大和平移。",openSeries:"全屏打开影像",technical:"影像来源与使用限制",
+    technicalText:"保留门户返回的原始帧和显示元数据；查看器显示按默认窗宽、窗位生成的 PNG。CT/MR/US 请求源分辨率，部分 X 线采用门户完整查看器分辨率。序列名称未由门户提供，按门户原有顺序编号。这不是完整诊断 DICOM，不用于诊断，不能替代医院原始影像。",
+    privacyTitle:"隐私与使用说明",privacy:"本档案含个人医疗信息，仅供本人或获授权人员使用。网页本身不设身份验证，不要发布到公共网站。私有 GitHub 仓库不代表 Pages 网页也是私有。",
+    offlineHelp:"所有 PDF 渲染和影像浏览均在本地完成，不使用在线翻译、外部字体或分析服务。移动或分享时需保留 HTML、assets 和 exams 文件夹的相对位置。手机须先完整解压，再用支持本地 HTML 与 JavaScript 的浏览器或文件应用打开；系统 ZIP/文件预览可能不支持交互。",
+    exportTime:"档案更新",incomplete:"资料尚未保存完整，请勿将此页面视为完整档案。",play:"播放",pause:"暂停",speed:"播放速度",fit:"适应",framePosition:"帧位置",pagePosition:"页码",previousFrame:"上一帧",nextFrame:"下一帧",previousPage:"上一页",nextPage:"下一页",zoomIn:"放大",zoomOut:"缩小",nativeFrame:"原始帧",
+    imageHint:"滚轮 / 方向键逐帧 · 滑动切片 · 双指缩放 · 放大后拖动平移 · 空格播放 / 暂停",
+    imageWarning:"患者门户影像，非完整诊断 DICOM，不用于诊断。100% 表示适应屏幕。",
+    pdfHint:"左右方向键翻页 · + / − 缩放 · 放大后滚动查看 · Esc 关闭",
+    nativeExport:"原站 PNG",nativeExportNote:"本帧来自原站“下载当前图像”，保留其导出尺寸；门户返回帧另行保存。",
+    imageError:"影像无法读取。请检查 exams 文件夹是否完整，并确认浏览器有权读取本地文件；未以其他影像替代。",
+    systemFullscreen:"系统全屏",fullscreenUnavailable:"已进入浏览器内全屏。此设备不支持系统全屏，仍可使用全部查看功能。",
+    fullscreenDenied:"浏览器未允许系统全屏；已保留浏览器内全屏查看。",
+    fullscreenExitError:"退出系统全屏失败，请使用浏览器的全屏退出操作。",cleanupError:"释放上一份 PDF 时出现错误，请重新打开页面。"
+  },
+  en:{
+    brand:"Medical archive",privateData:"Personal medical information",timeline:"Examinations",search:"Search examination, date or accession",year:"Year",modality:"Modality",bodyPart:"Body region",
+    allYears:"All years",allModalities:"All modalities",allBodies:"All regions",resetFilters:"Clear filters",found:"records",noResults:"No examinations match these filters.",exams:"examinations",reports:"reports",series:"image sets",frames:"frames",set:"Set",
+    modalities:{CT:"CT",MR:"MRI",US:"Ultrasound",XR:"X-ray"},singulars:{reports:"report",series:"image set",frames:"frame"},
+    bodies:{knee:"Knee",chest:"Chest",abdomen:"Abdomen",urinary:"Urinary tract",neck:"Neck",hand:"Hand",unspecified:"Not specified"},
+    reportTab:"Reports",imageTab:"Images",metadata:"Examination information",accession:"Accession",referrer:"Referring physician",organization:"Provider",sourceModality:"Portal source modality",sourceDescription:"Original description",noValue:"Not provided in source",
+    classificationNote:"Classified as X-ray for filtering from the explicit examination name. The portal's original CT modality remains unchanged.",
+    original:"English original",translation:"Chinese reference",originalSub:"Provider-issued · Original PDF",translationSub:"System translation · Reference only · Not original",fullscreen:"Full screen",openPdf:"Open the actual PDF file",close:"Close",
+    loading:"Loading the original PDF…",loadingTranslation:"Loading the Chinese reference PDF…",pdfError:"PDF preview failed. Use the PDF link below to open the actual file.",renderingError:"This PDF page could not be rendered.",
+    firstPage:"First-page cover",firstFrame:"First frame",loadOnOpen:"Only small covers load here. Full PDFs and individual image frames load when opened. Unopened files are not downloaded.",
+    coverError:"The cover could not be read. Open the PDF to view the original file.",textLoading:"Loading report text…",textError:"The report text could not be read. Use the TXT links to open the files.",
+    referenceNotice:"The English PDF is the provider's original. Chinese is a system-generated reference translation, not clinician-reviewed. Refer to the English original and your clinician for clarification.",
+    copyableText:"Copyable text · English & Chinese",originalTxt:"English full text",translationTxt:"Chinese translation",noReport:"The portal provides no downloadable report for this item. It is not marked as a successful download.",noImages:"The portal returned no images for this item. No other examination's images have been substituted.",pending:"Original marked as pending addendum",
+    galleryHint:"Each set contains one image sequence. Open full screen to scroll, swipe or play through frames; pause, zoom and pan at any time.",openSeries:"Open image set full screen",technical:"Image source & limitations",
+    technicalText:"Portal response frames and display metadata are preserved. The viewer shows default-windowed PNGs. CT/MR/US request source resolution; some X-rays use the portal full-viewer resolution. Sets are numbered in portal order because no series names were supplied. These are not complete diagnostic DICOM exports, are not for diagnosis, and do not replace the hospital's original data.",
+    privacyTitle:"Privacy & use",privacy:"Personal medical information for the patient and authorized people only. This static website has no authentication; do not publish it publicly. A private GitHub repository does not by itself make a Pages site private.",
+    offlineHelp:"PDF rendering and image viewing stay local. No online translation, external fonts or analytics. Keep the HTML, assets and exams folders in their relative locations. On mobile, extract the complete archive and open it in a browser/file app supporting local HTML and JavaScript; a system ZIP or file preview may not support interaction.",
+    exportTime:"Archive updated",incomplete:"Files are not yet complete. Do not treat this page as a complete archive.",play:"Play",pause:"Pause",speed:"Playback speed",fit:"Fit",framePosition:"Frame position",pagePosition:"Page number",previousFrame:"Previous frame",nextFrame:"Next frame",previousPage:"Previous page",nextPage:"Next page",zoomIn:"Zoom in",zoomOut:"Zoom out",nativeFrame:"Source frame",
+    imageHint:"Wheel / arrows: frames · Swipe: slices · Pinch: zoom · Drag when zoomed: pan · Space: play / pause",
+    imageWarning:"Patient-portal images, not complete diagnostic DICOM. Not for diagnosis. 100% means fit to screen.",
+    pdfHint:"Left / right: pages · + / −: zoom · Scroll when enlarged · Esc: close",
+    nativeExport:"Portal PNG",nativeExportNote:"This frame uses the site's genuine current-image download at its export dimensions; its portal response frame is preserved separately.",
+    imageError:"The image could not be read. Check the exams folder and your browser's local-file permissions. No substitute image has been used.",
+    systemFullscreen:"System full screen",fullscreenUnavailable:"Using full-window viewing. This device does not support system full screen; all viewing controls remain available.",
+    fullscreenDenied:"The browser did not allow system full screen. Full-window viewing remains available.",
+    fullscreenExitError:"Could not exit system full screen. Use your browser's full-screen exit control.",cleanupError:"An error occurred while releasing the previous PDF. Reopen this page."
+  }
+};
+let language=document.documentElement.lang;
+let selectedId=(archive.exams.find(exam=>exam.id===location.hash.slice(1))||archive.exams[0]).id;
+let activeTab="reports";
+const documents=new Map();
+const pendingBytes=new Map();
+let pdfEnginePromise;
+let viewer=null;
+let frameSequence=0;
+let modalPdfSequence=0;
+let modalPdfTask=null;
+let timer=null;
+let playing=false;
+let zoom=1,panX=0,panY=0;
+let lastFocus=null;
+let systemFullscreenOwned=false;
+let resizeTimer,toastTimer;
+const t=key=>words[language][key];
+const esc=value=>String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const number=value=>new Intl.NumberFormat(language==="zh"?"zh-CN":"en").format(value);
+const quantity=(value,key)=>number(value)+" "+(language==="en"&&value===1?words.en.singulars[key]:t(key));
+const title=exam=>language==="zh"?exam.titleZh:exam.description;
+const currentExam=()=>archive.exams.find(exam=>exam.id===selectedId);
+const modalityName=exam=>words[language].modalities[exam.displayModality]||exam.displayModality;
+const bodyName=exam=>words[language].bodies[exam.bodyPart];
+const frameCount=exam=>exam.series.reduce((sum,set)=>sum+set.frameCount,0);
+const decode64=value=>Uint8Array.from(atob(value),c=>c.charCodeAt(0));
+function toast(message){$("toast").textContent=message;$("toast").hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{$("toast").hidden=true;},7000);}
+
+// Classic local scripts carry exact PDF bytes so file:// works without fetch or a server.
+window.medicalPdfData={register(path,data){
+  const pending=pendingBytes.get(path);
+  if(!pending)throw new Error("Unexpected PDF payload: "+path);
+  pending.resolve(data);
+  pending.received=true;
+}};
+window.medicalReportText=window.medicalPdfData;
+function readPdfBytes(path,scriptPath){
+  if(pendingBytes.has(path))return pendingBytes.get(path).promise;
+  let resolve,reject;
+  const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});
+  const pending={resolve,reject,promise,received:false};
+  pendingBytes.set(path,pending);
+  const script=document.createElement("script");
+  script.src=scriptPath;
+  script.onload=()=>{pendingBytes.delete(path);script.remove();if(!pending.received)reject(new Error("PDF payload did not register: "+path));};
+  script.onerror=()=>{pendingBytes.delete(path);script.remove();reject(new Error("Cannot read local PDF payload: "+scriptPath));};
+  document.head.append(script);
+  return promise;
+}
+function pdfEngine(){
+  if(!pdfEnginePromise)pdfEnginePromise=(async()=>{
+    if(!window.medicalPdfRuntime)await new Promise((resolve,reject)=>{
+      const script=document.createElement("script");
+      script.src="assets/pdf-runtime.js";
+      script.onload=()=>{script.remove();resolve();};
+      script.onerror=()=>{script.remove();reject(new Error("Cannot read assets/pdf-runtime.js"));};
+      document.head.append(script);
+    });
+    const runtime=window.medicalPdfRuntime;
+    if(!runtime)throw new Error("Missing assets/pdf-runtime.js");
+    const engineUrl=URL.createObjectURL(new Blob([decode64(runtime.engine)],{type:"text/javascript"}));
+    const workerUrl=URL.createObjectURL(new Blob([decode64(runtime.worker)],{type:"text/javascript"}));
+    const engine=await import(engineUrl);
+    engine.GlobalWorkerOptions.workerSrc=workerUrl;
+    // Opaque file origins cannot reliably create module workers in mobile WebKit.
+    if(location.protocol==="file:")globalThis.pdfjsWorker=await import(workerUrl);
+    class LocalBinaryDataFactory{
+      async fetch({kind,filename}){
+        const value=runtime.resources[kind]?.[filename];
+        if(value===undefined)throw new Error("Missing bundled PDF resource: "+kind+"/"+filename);
+        return decode64(value);
+      }
+    }
+    return {engine,LocalBinaryDataFactory};
+  })().catch(error=>{pdfEnginePromise=null;throw error;});
+  return pdfEnginePromise;
+}
+function pdfSource(report,kind){
+  return kind==="original"?{path:report.pdf,script:report.pdfData,count:report.pageCount}:{path:report.translationPdf,script:report.translationPdfData,count:report.translationPageCount};
+}
+function getPdf(report,kind){
+  const source=pdfSource(report,kind);
+  if(!documents.has(source.path)){
+    const entry={disposed:false,task:null,promise:null};
+    entry.promise=(async()=>{
+      const {engine,LocalBinaryDataFactory}=await pdfEngine();
+      if(entry.disposed)throw new Error("PDF view was disposed");
+      const data=decode64(await readPdfBytes(source.path,source.script));
+      if(entry.disposed)throw new Error("PDF view was disposed");
+      entry.task=engine.getDocument({data,isEvalSupported:false,useWorkerFetch:false,disableWorkerRendering:true,BinaryDataFactory:LocalBinaryDataFactory,cMapPacked:true,useSystemFonts:false});
+      return entry.task.promise;
+    })();
+    documents.set(source.path,entry);
+  }
+  return documents.get(source.path).promise;
+}
+function releaseDocuments(){
+  for(const entry of documents.values()){
+    entry.disposed=true;
+    if(entry.task)entry.task.destroy().catch(error=>{console.error("PDF cleanup failed",error);toast(t("cleanupError"));});
+  }
+  documents.clear();
+}
+function canvasRender(pdfPage,canvas,cssScale,pixelLimit=6000000){
+  const cssViewport=pdfPage.getViewport({scale:cssScale});
+  const density=Math.min(window.devicePixelRatio||1,2,Math.sqrt(pixelLimit/(cssViewport.width*cssViewport.height)));
+  const viewport=pdfPage.getViewport({scale:cssScale*density});
+  canvas.width=Math.max(1,Math.floor(viewport.width));
+  canvas.height=Math.max(1,Math.floor(viewport.height));
+  canvas.style.width=cssViewport.width+"px";
+  canvas.style.height=cssViewport.height+"px";
+  return pdfPage.render({canvasContext:canvas.getContext("2d",{alpha:false}),viewport,background:"rgb(255,255,255)"});
+}
+async function loadReportText(details){
+  if(!details.open||details.dataset.loaded)return;
+  details.dataset.loaded="loading";
+  const report=currentExam().reports[Number(details.dataset.reportText)];
+  const status=details.querySelector(".text-status");
+  status.hidden=false;status.textContent=t("textLoading");
+  try{
+    const text=await readPdfBytes(report.originalTxt,report.textData);
+    if(!details.isConnected)return;
+    details.querySelector('pre[lang="en"]').textContent=text.clinicalText;
+    details.querySelector('pre[lang="zh"]').textContent=text.translation;
+    details.dataset.loaded="true";status.hidden=true;
+  }catch(error){
+    if(!details.isConnected)return;
+    delete details.dataset.loaded;
+    console.error("Report text failed",error);
+    status.classList.add("error");status.textContent=t("textError")+" "+error.message;
+  }
+}
+function filteredExams(){
+  const query=$("search").value.trim().toLowerCase();
+  return archive.exams.filter(exam=>
+    (!$("year-filter").value||exam.date.startsWith($("year-filter").value))&&
+    (!$("modality-filter").value||exam.displayModality===$("modality-filter").value)&&
+    (!$("body-filter").value||exam.bodyPart===$("body-filter").value)&&
+    (!query||[exam.id,exam.date,exam.description,exam.titleZh,exam.modality,...["zh","en"].flatMap(code=>[words[code].modalities[exam.displayModality],words[code].bodies[exam.bodyPart]])].join(" ").toLowerCase().includes(query))
+  );
+}
+function renderTimeline(){
+  const filtered=filteredExams();
+  $("results-count").textContent=number(filtered.length)+" / "+number(archive.exams.length)+" "+t("found");
+  $("reset-filters").hidden=!["search","year-filter","modality-filter","body-filter"].some(id=>$(id).value);
+  $("exam-detail").hidden=!filtered.length;$("empty-search").hidden=!!filtered.length;
+  let year="";
+  $("timeline").innerHTML=filtered.map(exam=>{
+    let heading="";
+    if(year!==exam.date.slice(0,4)){year=exam.date.slice(0,4);heading=`<div class="year-label">${year}</div>`;}
+    return heading+`<button type="button" class="exam-card ${exam.id===selectedId?"selected":""}" data-exam="${esc(exam.id)}" ${exam.id===selectedId?'aria-current="true"':""}><time datetime="${exam.date}">${exam.date}</time><span class="card-title">${esc(title(exam))}</span><span class="card-bottom"><span>${esc(modalityName(exam))}</span><span>${esc(bodyName(exam))}</span></span></button>`;
+  }).join("")||`<p class="no-results">${t("noResults")}</p>`;
+}
+function pdfCard(report,index,kind){
+  const source=pdfSource(report,kind);
+  const cover=kind==="original"?report.cover:report.translationCover;
+  return `<article class="pdf-card ${kind}" data-report-index="${index}" data-pdf-kind="${kind}" data-rendered="loading"><header class="pdf-head"><div><h3>${t(kind)}</h3><p>${t(kind==="original"?"originalSub":"translationSub")}</p></div>${icon(kind==="original"?"document":"translate")}</header>
+    <div class="pdf-preview" role="button" tabindex="0" data-open-pdf aria-label="${t("fullscreen")} · ${t(kind)}"><img class="pdf-cover" src="${esc(cover)}" alt="${t(kind)} · ${t("firstPage")}" decoding="async"><div class="pdf-status error" role="alert" hidden>${t("coverError")}</div><span class="cover-label">${t("firstPage")}</span><span class="preview-expand">${icon("expand")}</span></div>
+    <div class="pdf-toolbar"><span class="page-count">1 / ${source.count}</span><div class="pdf-actions"><a class="pdf-link" href="${esc(source.path)}" target="_blank" rel="noopener" aria-label="${t("openPdf")} · ${t(kind)}">PDF ${icon("external")}</a><button type="button" class="text-button" data-open-pdf>${icon("expand")}${t("fullscreen")}</button></div></div></article>`;
+}
+function renderExam(){
+  releaseDocuments();
+  const exam=currentExam();
+  const metadata=[["accession",exam.id],["referrer",exam.referrer||t("noValue")],["organization",exam.organization],["sourceModality",exam.modality]];
+  const reports=exam.reports.map((report,index)=>`
+    ${report.pendingAddendum?`<p class="pending-note">${t("pending")}</p>`:""}
+    <div class="report-pair">${pdfCard(report,index,"original")}${pdfCard(report,index,"translation")}</div>
+    <p class="reference-notice">${icon("info")}<span>${t("referenceNotice")}</span></p>
+    <details class="report-texts" data-report-text="${index}"><summary>${t("copyableText")}</summary><p class="text-status" role="status" hidden></p><div class="text-pair"><article><h3>${t("original")}</h3><pre lang="en"></pre><div class="text-links"><a href="${esc(report.originalTxt)}" download>${t("originalTxt")}</a></div></article><article><h3 lang="zh">中文参考译文 / Chinese reference</h3><pre lang="zh"></pre><div class="text-links"><a href="${esc(report.translationTxt)}" download>${t("translationTxt")}</a></div></article></div></details>`).join("");
+  const gallery=exam.series.map((set,index)=>`<button type="button" class="series-card" data-series="${index}" aria-label="${t("openSeries")} · ${index+1}"><div class="series-cover"><img data-cover-src="${esc(set.thumbnail)}" loading="lazy" decoding="async" alt="${esc(title(exam))} · ${t("set")} ${index+1} · ${t("firstFrame")}"><span class="series-count">${quantity(set.frameCount,"frames")}</span></div><div class="series-info"><div><strong>${t("set")} ${String(index+1).padStart(2,"0")}</strong><small>${t("firstFrame")} · ${esc(modalityName(exam))}${set.nativeExportFrames.length?" · "+t("nativeExport"):""}</small></div>${icon("expand")}</div></button>`).join("");
+  $("exam-detail").innerHTML=`<header class="detail-header"><div class="detail-eyebrow"><span class="pill">${esc(modalityName(exam))}</span><time datetime="${exam.date}" class="numeric">${exam.date}</time><span>·</span><span>${esc(bodyName(exam))}</span></div><h1>${esc(title(exam))}</h1>${language==="zh"?`<p class="source-name" lang="en">${esc(exam.description)}</p>`:""}<p class="detail-caption"><span>${icon("document")}${quantity(exam.reports.length,"reports")}</span><span>${icon("image")}${quantity(exam.series.length,"series")} · ${quantity(frameCount(exam),"frames")}</span><span class="numeric">${esc(exam.id)}</span></p>
+    <details class="exam-metadata"><summary>${t("metadata")}</summary><dl class="metadata-grid">${metadata.map(([key,value])=>`<div><dt>${t(key)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>${exam.modality==="CT"&&exam.displayModality==="XR"?`<p class="classification-note">${t("classificationNote")}</p>`:""}</details></header>
+    <div class="tabs" role="tablist" aria-label="${t("reportTab")} / ${t("imageTab")}"><button id="tab-reports" class="tab" type="button" role="tab" data-tab="reports" aria-controls="panel-reports">${t("reportTab")}<span class="tab-count">${exam.reports.length}</span></button><button id="tab-images" class="tab" type="button" role="tab" data-tab="images" aria-controls="panel-images">${t("imageTab")}<span class="tab-count">${exam.series.length}</span></button></div>
+    <section id="panel-reports" class="reports-section" role="tabpanel" aria-labelledby="tab-reports">${reports?`<p class="load-on-open">${t("loadOnOpen")}</p>`+reports:`<div class="empty-state">${icon("document")}<p>${t("noReport")}</p></div>`}</section>
+    <section id="panel-images" class="images-section" role="tabpanel" aria-labelledby="tab-images">${gallery?`<p class="load-on-open">${t("loadOnOpen")}</p><div class="gallery-intro"><p>${t("galleryHint")}</p></div><div class="series-grid">${gallery}</div>`:`<div class="empty-state">${icon("image")}<p>${t("noImages")}</p></div>`}<details class="technical"><summary>${t("technical")}</summary><p>${t("technicalText")}</p></details></section>`;
+  setTab(activeTab);
+}
+function setTab(tab){
+  activeTab=tab;
+  for(const key of ["reports","images"]){
+    const selected=key===tab;
+    $("tab-"+key).setAttribute("aria-selected",String(selected));
+    $("tab-"+key).tabIndex=selected?0:-1;
+    $("panel-"+key).hidden=!selected;
+  }
+  if(tab==="images")for(const image of $("panel-images").querySelectorAll("img[data-cover-src]")){image.src=image.dataset.coverSrc;delete image.dataset.coverSrc;}
+}
+function selectExam(id,fromTimeline=false){
+  if(id===selectedId&&$("exam-detail").querySelector("h1")){
+    renderTimeline();
+    if(fromTimeline){closeSidebar(false);if(matchMedia("(max-width:860px)").matches)window.scrollTo({top:0,behavior:"instant"});}
+    return;
+  }
+  selectedId=id;activeTab="reports";
+  history.replaceState(null,"","#"+encodeURIComponent(id));
+  renderTimeline();renderExam();
+  if(fromTimeline&&matchMedia("(max-width:860px)").matches){closeSidebar(false);$("exam-detail").focus({preventScroll:true});window.scrollTo({top:0,behavior:"instant"});}
+}
+function applyFilters(){
+  const filtered=filteredExams();
+  if(filtered.length&&!filtered.some(exam=>exam.id===selectedId))selectExam(filtered[0].id);
+  else renderTimeline();
+}
+function renderLanguage(){
+  document.documentElement.lang=language;
+  document.title=(language==="zh"?"影像档案":"Medical archive")+" · "+archive.patientName;
+  document.querySelectorAll("[data-i18n]").forEach(node=>{node.textContent=t(node.dataset.i18n);});
+  for(const code of ["zh","en"]){$("lang-"+code).classList.toggle("active",code===language);$("lang-"+code).setAttribute("aria-pressed",String(code===language));}
+  $("patient-name").textContent=archive.patientName+" · "+archive.exams.at(-1).date.slice(0,4)+"–"+archive.exams[0].date.slice(0,4);
+  $("search").placeholder=t("search");
+  for(const [id,key,values,label] of [
+    ["year-filter","allYears",[...new Set(archive.exams.map(exam=>exam.date.slice(0,4)))],value=>value],
+    ["modality-filter","allModalities",["CT","MR","US","XR"].filter(value=>archive.exams.some(exam=>exam.displayModality===value)),value=>words[language].modalities[value]],
+    ["body-filter","allBodies",["knee","chest","abdomen","urinary","neck","hand","unspecified"].filter(value=>archive.exams.some(exam=>exam.bodyPart===value)),value=>words[language].bodies[value]]
+  ]){
+    const value=$(id).value;
+    $(id).innerHTML=`<option value="">${t(key)}</option>`+values.map(option=>`<option value="${esc(option)}">${esc(label(option))}</option>`).join("");
+    $(id).value=value;
+  }
+  $("export-time").textContent=t("exportTime")+" · "+archive.exportedAt.slice(0,10);
+  $("incomplete-banner").hidden=archive.downloadComplete;
+  renderTimeline();renderExam();renderIcons();
+}
+function openSidebar(){
+  $("sidebar").inert=false;$("sidebar").classList.add("open");$("sidebar").setAttribute("role","dialog");$("sidebar").setAttribute("aria-modal","true");
+  $("drawer-backdrop").classList.add("visible");$("mobile-timeline").setAttribute("aria-expanded","true");
+  document.body.style.overflow="hidden";$("search").focus();
+}
+function closeSidebar(restoreFocus=true){
+  $("sidebar").classList.remove("open");$("sidebar").removeAttribute("role");$("sidebar").removeAttribute("aria-modal");
+  $("sidebar").inert=matchMedia("(max-width:860px)").matches;
+  $("drawer-backdrop").classList.remove("visible");$("mobile-timeline").setAttribute("aria-expanded","false");
+  document.body.style.overflow="";
+  if(restoreFocus&&matchMedia("(max-width:860px)").matches)$("mobile-timeline").focus();
+}
+async function requestSystemFullscreen(){
+  $("viewer-status").textContent="";
+  const target=$("viewer").querySelector(".viewer-inner");
+  if(!target.requestFullscreen){$("viewer-status").textContent=t("fullscreenUnavailable");return;}
+  try{
+    if(document.fullscreenElement){await document.exitFullscreen();systemFullscreenOwned=false;}
+    else{await target.requestFullscreen();systemFullscreenOwned=true;}
+  }catch(error){console.warn("System fullscreen unavailable",error);$("viewer-status").textContent=t("fullscreenDenied");}
+}
+function showViewer(system=false){
+  if(!$("viewer").open){lastFocus=document.activeElement;$("viewer").showModal();document.body.style.overflow="hidden";}
+  $("viewer-status").textContent="";
+  if(system&&!document.fullscreenElement)requestSystemFullscreen();
+}
+function pause(){
+  playing=false;clearTimeout(timer);timer=null;
+  $("play").textContent=t("play");$("play").classList.remove("active");$("play").setAttribute("aria-pressed","false");
+}
+function closeViewer(){
+  pause();frameSequence++;modalPdfSequence++;
+  if(modalPdfTask){modalPdfTask.cancel();modalPdfTask=null;}
+  if(viewer?.kind==="pdf")releaseDocuments();
+  $("viewer").close();$("viewer-image").removeAttribute("src");$("viewer-pdf").width=1;$("viewer-pdf").height=1;
+  viewer=null;document.body.style.overflow="";
+  if(systemFullscreenOwned&&document.fullscreenElement)document.exitFullscreen().catch(error=>{console.error("Fullscreen exit failed",error);toast(t("fullscreenExitError"));});
+  systemFullscreenOwned=false;
+  if(lastFocus?.isConnected)lastFocus.focus({preventScroll:true});
+}
+function updateImageTransform(){
+  $("viewer-image").style.transform=`translate(${panX}px,${panY}px) scale(${zoom})`;
+  $("zoom-label").textContent=Math.round(zoom*100)+"%";$("image-stage").classList.toggle("zoomed",zoom>1);
+}
+function changeImageZoom(value){
+  zoom=Math.min(8,Math.max(1,value));
+  if(zoom===1){panX=0;panY=0;}
+  updateImageTransform();
+}
+function openSeries(index,system=true){
+  pause();modalPdfSequence++;
+  if(modalPdfTask){modalPdfTask.cancel();modalPdfTask=null;}
+  const exam=currentExam(),source=exam.series[index];
+  const paths=Array.from({length:source.frameCount},(_,i)=>source.folder+"/"+String(i+1).padStart(5,"0")+".png");
+  const set={...source,paths,nativePaths:paths.map(path=>path.slice(0,-4)+".j2c")};
+  viewer={kind:"images",examId:exam.id,seriesIndex:index,index:0,set};
+  zoom=1;panX=0;panY=0;updateImageTransform();
+  $("viewer-title").textContent=title(exam);
+  $("viewer-subtitle").textContent=exam.date+" · "+t("set")+" "+(index+1)+" / "+exam.series.length+" · "+exam.id;
+  $("image-stage").hidden=false;$("pdf-stage").hidden=true;$("image-tools").hidden=false;$("pdf-tools").hidden=true;
+  $("frame-slider").max=set.paths.length;$("frame-slider").value=1;$("frame-slider").disabled=set.paths.length<2;$("slider-label").textContent=t("framePosition");
+  $("play").disabled=set.paths.length<2;
+  $("series-picker").innerHTML=exam.series.map((value,i)=>`<option value="${i}">${t("set")} ${String(i+1).padStart(2,"0")} · ${quantity(value.frameCount,"frames")}</option>`).join("");
+  $("series-picker").value=index;
+  $("viewer-hint").textContent=t("imageHint");
+  showViewer(system);$("image-stage").focus({preventScroll:true});loadFrame(0);
+}
+function loadFrame(index){
+  if(viewer?.kind!=="images")return;
+  clearTimeout(timer);timer=null;
+  const state=viewer,set=state.set;
+  index=(index+set.paths.length)%set.paths.length;state.index=index;
+  const sequence=++frameSequence;
+  $("image-error").hidden=true;
+  $("frame-slider").value=index+1;
+  $("frame-badge").textContent=(index+1)+" / "+set.paths.length;
+  $("image-stage").setAttribute("aria-busy","true");$("viewer-image").style.opacity=".4";
+  $("download-frame").href=set.paths[index];$("download-native").href=set.nativePaths[index];
+  $("viewer-note").textContent=t("imageWarning")+(set.nativeExportFrames.includes(index)?" "+t("nativeExportNote"):"");
+  const loader=new Image();
+  loader.onload=()=>{
+    if(sequence!==frameSequence||viewer!==state)return;
+    $("viewer-image").src=set.paths[index];$("viewer-image").alt=t("set")+" "+(state.seriesIndex+1)+" · "+(index+1)+" / "+set.paths.length;
+    $("viewer-image").style.opacity="1";$("image-stage").setAttribute("aria-busy","false");
+    $("frame-badge").textContent=(index+1)+" / "+set.paths.length+" · "+loader.naturalWidth+" × "+loader.naturalHeight;
+    if(playing)timer=setTimeout(()=>loadFrame(index+1),1000/Number($("speed").value));
+  };
+  loader.onerror=()=>{
+    if(sequence!==frameSequence||viewer!==state)return;
+    pause();$("viewer-image").removeAttribute("src");$("image-stage").setAttribute("aria-busy","false");$("image-error").hidden=false;$("image-error").textContent=t("imageError");
+  };
+  loader.src=set.paths[index];
+}
+function stepFrame(amount){if(viewer?.kind==="images"){pause();loadFrame(viewer.index+amount);}}
+function togglePlay(){
+  if(viewer?.kind!=="images"||viewer.set.paths.length<2)return;
+  if(playing){pause();return;}
+  playing=true;$("play").textContent=t("pause");$("play").classList.add("active");$("play").setAttribute("aria-pressed","true");loadFrame(viewer.index);
+}
+function updatePdfModalControls(){
+  if(viewer?.kind!=="pdf")return;
+  const report=currentExam().reports[viewer.reportIndex],source=pdfSource(report,viewer.source);
+  $("viewer-subtitle").textContent=t(viewer.source)+" · "+currentExam().date+" · "+currentExam().id;
+  $("pdf-source-original").setAttribute("aria-pressed",String(viewer.source==="original"));
+  $("pdf-source-translation").setAttribute("aria-pressed",String(viewer.source==="translation"));
+  $("pdf-page-count").textContent=viewer.page+" / "+viewer.count;
+  $("previous-page").disabled=viewer.page<=1;$("next-page").disabled=viewer.page>=viewer.count;
+  $("frame-slider").max=viewer.count;$("frame-slider").value=viewer.page;$("frame-slider").disabled=viewer.count<2;
+  $("pdf-zoom-label").textContent=Math.round(viewer.zoom*100)+"%";
+  $("download-pdf").href=source.path;$("viewer-note").textContent=t("referenceNotice");
+}
+function openPdf(index,kind,page=1){
+  pause();frameSequence++;
+  viewer={kind:"pdf",examId:selectedId,reportIndex:index,source:kind,page,count:pdfSource(currentExam().reports[index],kind).count,zoom:1};
+  $("viewer-title").textContent=title(currentExam());
+  $("image-stage").hidden=true;$("pdf-stage").hidden=false;$("image-tools").hidden=true;$("pdf-tools").hidden=false;
+  $("viewer-hint").textContent=t("pdfHint");$("slider-label").textContent=t("pagePosition");
+  updatePdfModalControls();showViewer(true);renderModalPdf(true);
+}
+async function renderModalPdf(resetScroll=false){
+  if(viewer?.kind!=="pdf")return;
+  const state=viewer,sequence=++modalPdfSequence;
+  if(modalPdfTask)modalPdfTask.cancel();
+  $("viewer-pdf").dataset.rendered="loading";
+  $("pdf-loading").hidden=false;$("pdf-error").hidden=true;
+  try{
+    const pdf=await getPdf(currentExam().reports[state.reportIndex],state.source);
+    if(viewer!==state||sequence!==modalPdfSequence)return;
+    state.count=pdf.numPages;state.page=Math.min(state.page,state.count);updatePdfModalControls();
+    const page=await pdf.getPage(state.page);
+    if(viewer!==state||sequence!==modalPdfSequence)return;
+    const stage=$("pdf-stage"),base=page.getViewport({scale:1}),padding=matchMedia("(max-width:600px)").matches?24:44;
+    const fitScale=Math.min((stage.clientWidth-padding)/base.width,(stage.clientHeight-padding)/base.height);
+    modalPdfTask=canvasRender(page,$("viewer-pdf"),fitScale*state.zoom);
+    await modalPdfTask.promise;
+    if(viewer!==state||sequence!==modalPdfSequence)return;
+    $("pdf-loading").hidden=true;$("viewer-pdf").dataset.rendered=state.source+"-"+state.page;
+    $("viewer-pdf").setAttribute("aria-label",t(state.source)+" · "+state.page+" / "+state.count);
+    if(resetScroll){stage.scrollLeft=0;stage.scrollTop=0;}
+  }catch(error){
+    if(error.name==="RenderingCancelledException"||viewer!==state||sequence!==modalPdfSequence)return;
+    console.error("Fullscreen PDF failed",error);
+    $("pdf-loading").hidden=true;$("pdf-error").hidden=false;$("pdf-error").textContent=t("renderingError")+" "+error.message+" "+t("pdfError");
+  }
+}
+function stepPage(amount){
+  if(viewer?.kind!=="pdf")return;
+  const page=Math.min(viewer.count,Math.max(1,viewer.page+amount));
+  if(page===viewer.page)return;
+  viewer.page=page;updatePdfModalControls();renderModalPdf(true);
+}
+function changePdfZoom(value){
+  if(viewer?.kind!=="pdf")return;
+  viewer.zoom=Math.min(6,Math.max(1,value));updatePdfModalControls();renderModalPdf(value===1);
+}
+function switchPdfSource(kind){
+  if(viewer?.kind!=="pdf"||viewer.source===kind)return;
+  viewer.source=kind;viewer.page=1;viewer.zoom=1;
+  viewer.count=pdfSource(currentExam().reports[viewer.reportIndex],kind).count;
+  updatePdfModalControls();renderModalPdf(true);
+}
+$("lang-zh").addEventListener("click",()=>{language="zh";renderLanguage();});
+$("lang-en").addEventListener("click",()=>{language="en";renderLanguage();});
+$("search").addEventListener("input",applyFilters);
+for(const id of ["year-filter","modality-filter","body-filter"])$(id).addEventListener("change",applyFilters);
+$("reset-filters").addEventListener("click",()=>{for(const id of ["search","year-filter","modality-filter","body-filter"])$(id).value="";applyFilters();});
+$("timeline").addEventListener("click",event=>{const card=event.target.closest("[data-exam]");if(card)selectExam(card.dataset.exam,true);});
+$("exam-detail").addEventListener("click",event=>{
+  const tab=event.target.closest("[data-tab]"),series=event.target.closest("[data-series]"),card=event.target.closest(".pdf-card");
+  if(tab){setTab(tab.dataset.tab);return;}
+  if(series){openSeries(Number(series.dataset.series));return;}
+  if(!card)return;
+  if(event.target.closest("[data-open-pdf]"))openPdf(Number(card.dataset.reportIndex),card.dataset.pdfKind);
+});
+$("exam-detail").addEventListener("load",event=>{if(event.target.matches(".pdf-cover"))event.target.closest(".pdf-card").dataset.rendered="true";},true);
+$("exam-detail").addEventListener("error",event=>{if(event.target.matches(".pdf-cover")){const card=event.target.closest(".pdf-card");card.dataset.rendered="error";card.querySelector(".pdf-status").hidden=false;}},true);
+$("exam-detail").addEventListener("toggle",event=>{if(event.target.matches("[data-report-text]"))loadReportText(event.target);},true);
+$("exam-detail").addEventListener("keydown",event=>{
+  if(event.target.matches(".pdf-preview")&&(event.key==="Enter"||event.code==="Space")){event.preventDefault();event.target.click();}
+  if(event.target.matches("[role=tab]")&&["ArrowLeft","ArrowRight","Home","End"].includes(event.key)){event.preventDefault();const tab=event.key==="Home"?"reports":event.key==="End"?"images":activeTab==="reports"?"images":"reports";setTab(tab);$("tab-"+tab).focus();}
+});
+$("mobile-timeline").addEventListener("click",()=>{$("sidebar").classList.contains("open")?closeSidebar():openSidebar();});
+$("close-sidebar").addEventListener("click",()=>closeSidebar());
+$("drawer-backdrop").addEventListener("click",()=>closeSidebar());
+$("close-viewer").addEventListener("click",closeViewer);
+$("viewer").addEventListener("cancel",event=>{event.preventDefault();closeViewer();});
+$("system-fullscreen").addEventListener("click",requestSystemFullscreen);
+$("previous-frame").addEventListener("click",()=>stepFrame(-1));
+$("next-frame").addEventListener("click",()=>stepFrame(1));
+$("play").addEventListener("click",togglePlay);
+$("frame-slider").addEventListener("input",()=>{if(viewer?.kind==="images"){pause();loadFrame(Number($("frame-slider").value)-1);}else if(viewer?.kind==="pdf"){viewer.page=Number($("frame-slider").value);updatePdfModalControls();renderModalPdf(true);}});
+$("series-picker").addEventListener("change",()=>openSeries(Number($("series-picker").value),false));
+$("zoom-in").addEventListener("click",()=>changeImageZoom(zoom*1.25));
+$("zoom-out").addEventListener("click",()=>changeImageZoom(zoom/1.25));
+$("reset-zoom").addEventListener("click",()=>changeImageZoom(1));
+$("speed").addEventListener("change",()=>{if(playing)loadFrame(viewer.index);});
+$("previous-page").addEventListener("click",()=>stepPage(-1));
+$("next-page").addEventListener("click",()=>stepPage(1));
+$("pdf-zoom-in").addEventListener("click",()=>changePdfZoom(viewer.zoom*1.25));
+$("pdf-zoom-out").addEventListener("click",()=>changePdfZoom(viewer.zoom/1.25));
+$("pdf-fit").addEventListener("click",()=>changePdfZoom(1));
+$("pdf-source-original").addEventListener("click",()=>switchPdfSource("original"));
+$("pdf-source-translation").addEventListener("click",()=>switchPdfSource("translation"));
+let wheelDelta=0;
+$("image-stage").addEventListener("wheel",event=>{event.preventDefault();if(event.ctrlKey||event.metaKey){changeImageZoom(zoom*Math.exp(-event.deltaY/250));return;}wheelDelta+=event.deltaY;if(Math.abs(wheelDelta)>=35){stepFrame(wheelDelta>0?1:-1);wheelDelta=0;}},{passive:false});
+$("pdf-stage").addEventListener("wheel",event=>{if((event.ctrlKey||event.metaKey)&&viewer?.kind==="pdf"){event.preventDefault();changePdfZoom(viewer.zoom*Math.exp(-event.deltaY/250));}},{passive:false});
+const pointers=new Map();
+let gesture=null;
+const distance=()=>{const values=[...pointers.values()];return Math.hypot(values[0].x-values[1].x,values[0].y-values[1].y);};
+$("image-stage").addEventListener("pointerdown",event=>{
+  if(event.button!==0)return;
+  $("image-stage").setPointerCapture(event.pointerId);pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+  if(pointers.size===1)gesture={x:event.clientX,y:event.clientY,panX,panY,pinch:false};
+  else if(pointers.size===2)gesture={...gesture,pinch:true,distance:distance(),zoom};
+});
+$("image-stage").addEventListener("pointermove",event=>{
+  if(!pointers.has(event.pointerId)||!gesture)return;
+  pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+  if(pointers.size===2)changeImageZoom(gesture.zoom*distance()/Math.max(1,gesture.distance));
+  else if(!gesture.pinch&&zoom>1){panX=gesture.panX+event.clientX-gesture.x;panY=gesture.panY+event.clientY-gesture.y;updateImageTransform();}
+});
+function finishPointer(event,cancelled=false){
+  if(!pointers.has(event.pointerId))return;
+  if(!cancelled&&pointers.size===1&&gesture&&!gesture.pinch&&zoom===1){const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;if(Math.max(Math.abs(dx),Math.abs(dy))>45)stepFrame((Math.abs(dx)>Math.abs(dy)?-dx:-dy)>0?1:-1);}
+  pointers.delete(event.pointerId);if(!pointers.size)gesture=null;
+}
+$("image-stage").addEventListener("pointerup",event=>finishPointer(event));
+$("image-stage").addEventListener("pointercancel",event=>finishPointer(event,true));
+document.addEventListener("keydown",event=>{
+  if($("sidebar").classList.contains("open")&&matchMedia("(max-width:860px)").matches){
+    if(event.key==="Escape"){event.preventDefault();closeSidebar();return;}
+    if(event.key==="Tab"){const nodes=[...$("sidebar").querySelectorAll("button,input,select,a")].filter(node=>!node.hidden&&!node.disabled&&node.getClientRects().length),first=nodes[0],last=nodes.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
+  }
+  if(!$("viewer").open||["INPUT","SELECT","TEXTAREA"].includes(event.target.tagName))return;
+  if(["ArrowRight","ArrowDown"].includes(event.key)){event.preventDefault();viewer.kind==="images"?stepFrame(1):stepPage(1);}
+  else if(["ArrowLeft","ArrowUp"].includes(event.key)){event.preventDefault();viewer.kind==="images"?stepFrame(-1):stepPage(-1);}
+  else if(event.code==="Space"&&viewer.kind==="images"&&(event.target.tagName!=="BUTTON"||event.target.id==="play")){event.preventDefault();togglePlay();}
+  else if(event.key==="Home"){event.preventDefault();if(viewer.kind==="images"){pause();loadFrame(0);}else{viewer.page=1;updatePdfModalControls();renderModalPdf(true);}}
+  else if(event.key==="End"){event.preventDefault();if(viewer.kind==="images"){pause();loadFrame(viewer.set.paths.length-1);}else{viewer.page=viewer.count;updatePdfModalControls();renderModalPdf(true);}}
+  else if(event.key==="+"||event.key==="="){event.preventDefault();viewer.kind==="images"?changeImageZoom(zoom*1.25):changePdfZoom(viewer.zoom*1.25);}
+  else if(event.key==="-"){event.preventDefault();viewer.kind==="images"?changeImageZoom(zoom/1.25):changePdfZoom(viewer.zoom/1.25);}
+});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)pause();});
+window.addEventListener("hashchange",()=>{const exam=archive.exams.find(item=>item.id===location.hash.slice(1));if(exam){for(const id of ["search","year-filter","modality-filter","body-filter"])$(id).value="";selectExam(exam.id);}});
+window.addEventListener("resize",()=>{
+  if(!matchMedia("(max-width:860px)").matches&&$("sidebar").classList.contains("open"))closeSidebar(false);
+  $("sidebar").inert=matchMedia("(max-width:860px)").matches&&!$("sidebar").classList.contains("open");
+  clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(viewer?.kind==="pdf")renderModalPdf();},160);
+});
+renderLanguage();closeSidebar(false);
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+MMI@THE HOSPITAL
+Macquarie University Hospital
+Ground Floor, 2 Technology Place
+Macquarie University NSW 2109
+ABN: 46 141 203 125
+MQ Health Pty Ltd
+MMI@MACQUARIE CENTRE
+Shop 1046 (near the ice rink) Macquarie Centre
+Cnr Herring and Waterloo Roads
+North Ryde NSW 2113
+ABN: 46 141 203 125
+MQ Health Pty Ltd
+P: 02 9430 1100 | F: 02 9430 1199 | E: mmi.enquires@mqhealth.org.au | www.mqmi.com.au
+Intelerad Medical Systems - Report exported on Thu, Nov 5, 2026 20:44:45 +1100 - Page 1 of 1
+Patient Name:
+WANG, DONGPING
+Patient ID:
+MQ152436
+Gender:
+Male
+Date of Birth:
+January 7, 1957
+Referring Physician:
+LIN, CHARLIE
+Accession Number:
+3362266-MR
+Examination Date:
+October 26, 2026 11:25
+Report Status:
+Final
+Modality:
+MR
+ 
+Report for Magnetic Resonance
+MRI RIGHT KNEE
+HISTORY: Locking episodes, ?meniscal injury.
+TECHNIQUE: Axial, coronal and sagittal PD fat-sat and PD sequences.
+FINDINGS:
+ACL and PCL are intact.
+Medial meniscus is intact. There is no displaced meniscal flap or extrusion. There is full-thickness cartilage loss in the inner
+weightbearing surface of the medial femoral condyle. Intact articular cartilage on the medial tibial plateau. MCL is intact.
+Lateral meniscus is intact. There is a chronic full-thickness cartilage defect in the lateral tibial plateau inner posterior aspect,
+measuring 12 x 14mm, with some evidence of remodelling. Mild degeneration of the proximal LCL attachment. No acute tear or
+sprain. Biceps femoris and popliteus tendons appear normal. Minimal oedema adjacent to the distal ITB.
+Full-thickness cartilage loss in the lateral patellar facet superiorly with underlying subchondral cystic change and oedema. Moderate-
+grade chondral wear in the femoral trochlea centrally with full-thickness chondral fissuring in the medial femoral trochlea inferiorly.
+Hoffa's fat pad appears normal.
+There is tendinosis of the proximal patellar tendon and enthesopathy of the distal quadriceps and proximal patellar tendon.
+Small knee joint effusion. No intra-articular loose body is seen. No Baker’s cyst.
+Neurovascular structures appear normal.
+CONCLUSION:
+No meniscal tear.
+Areas of full-thickness cartilage loss in the medial femoral condyle, lateral tibial plateau, patella and femoral trochlea.
+Moderate proximal patellar tendinosis.
+Small knee joint effusion.
+Radiologist: Dr S. McDonald

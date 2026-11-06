@@ -1,0 +1,11 @@
+{
+  "path": "exams/2026-07-27_3339608-CT/series-001/00638.png",
+  "nativePath": "exams/2026-07-27_3339608-CT/series-001/00638.j2c",
+  "metadata": "exams/2026-07-27_3339608-CT/series-001/1.2.840.113619.2.416.2765082785892225185094142087002470812.638.metadata.json",
+  "contentType": "image/j2c",
+  "quality": "targetPixelCount=99999991",
+  "width": 512,
+  "height": 512,
+  "bytes": 211445,
+  "sha256": "86deb29e2d29d78a71f5ba1625d1686d31c474e2dbe9faf7554441b5053676ce"
+}
