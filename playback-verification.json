@@ -1,0 +1,58 @@
+[
+  {
+    "browser": "edge-delayed-http",
+    "passed": true,
+    "unchangedPixelsWhileLoading": true,
+    "dimOrBlankSamples": 0,
+    "sampleCount": 150,
+    "presentedFrames": 34,
+    "medianFrameIntervalMs": 66.65,
+    "maximumCachedFrames": 5,
+    "unopenedSeriesRequested": false,
+    "initialFullFrameRequests": 1,
+    "pauseSeekSpeedZoomSwitchCloseVerified": true,
+    "missingFrameErrorAndRetryVerified": true
+  },
+  {
+    "browser": "webkit-mobile-delayed-http",
+    "passed": true,
+    "unchangedPixelsWhileLoading": true,
+    "dimOrBlankSamples": 0,
+    "sampleCount": 142,
+    "presentedFrames": 37,
+    "medianFrameIntervalMs": 64,
+    "maximumCachedFrames": 5,
+    "unopenedSeriesRequested": false,
+    "initialFullFrameRequests": 1,
+    "pauseSeekSpeedZoomSwitchCloseVerified": true,
+    "missingFrameErrorAndRetryVerified": true
+  },
+  {
+    "browser": "edge-file",
+    "passed": true,
+    "unchangedPixelsWhileLoading": true,
+    "dimOrBlankSamples": 0,
+    "sampleCount": 150,
+    "presentedFrames": 36,
+    "medianFrameIntervalMs": 66.7,
+    "maximumCachedFrames": 5,
+    "unopenedSeriesRequested": false,
+    "initialFullFrameRequests": 1,
+    "pauseSeekSpeedZoomSwitchCloseVerified": true,
+    "missingFrameErrorAndRetryVerified": false
+  },
+  {
+    "browser": "webkit-mobile-file",
+    "passed": true,
+    "unchangedPixelsWhileLoading": true,
+    "dimOrBlankSamples": 0,
+    "sampleCount": 124,
+    "presentedFrames": 38,
+    "medianFrameIntervalMs": 65.0,
+    "maximumCachedFrames": 5,
+    "unopenedSeriesRequested": false,
+    "initialFullFrameRequests": 1,
+    "pauseSeekSpeedZoomSwitchCloseVerified": true,
+    "missingFrameErrorAndRetryVerified": false
+  }
+]

@@ -122,11 +122,11 @@ const words={
     privacyTitle:"隐私与使用说明",privacy:"本档案含个人医疗信息，仅供本人或获授权人员使用。网页本身不设身份验证，不要发布到公共网站。私有 GitHub 仓库不代表 Pages 网页也是私有。",
     offlineHelp:"所有 PDF 渲染和影像浏览均在本地完成，不使用在线翻译、外部字体或分析服务。移动或分享时需保留 HTML、assets 和 exams 文件夹的相对位置。手机须先完整解压，再用支持本地 HTML 与 JavaScript 的浏览器或文件应用打开；系统 ZIP/文件预览可能不支持交互。",
     exportTime:"档案更新",incomplete:"资料尚未保存完整，请勿将此页面视为完整档案。",play:"播放",pause:"暂停",speed:"播放速度",fit:"适应",framePosition:"帧位置",pagePosition:"页码",previousFrame:"上一帧",nextFrame:"下一帧",previousPage:"上一页",nextPage:"下一页",zoomIn:"放大",zoomOut:"缩小",nativeFrame:"原始帧",
-    imageHint:"滚轮 / 方向键逐帧 · 滑动切片 · 双指缩放 · 放大后拖动平移 · 空格播放 / 暂停",
+    imageHint:"滚轮 / 方向键逐帧 · 滑动切片 · 双指缩放 · 放大后拖动平移 · 空格播放 / 暂停 · 播放时仅缓冲当前序列的后续 4 帧",
     imageWarning:"患者门户影像，非完整诊断 DICOM，不用于诊断。100% 表示适应屏幕。",
     pdfHint:"左右方向键翻页 · + / − 缩放 · 放大后滚动查看 · Esc 关闭",
     nativeExport:"原站 PNG",nativeExportNote:"本帧来自原站“下载当前图像”，保留其导出尺寸；门户返回帧另行保存。",
-    imageError:"影像无法读取。请检查 exams 文件夹是否完整，并确认浏览器有权读取本地文件；未以其他影像替代。",
+    imageError:"影像无法读取，播放已停止；如已有成功显示的帧，将保留该帧。请检查 exams 文件夹是否完整，并确认浏览器有权读取本地文件。",
     systemFullscreen:"系统全屏",fullscreenUnavailable:"已进入浏览器内全屏。此设备不支持系统全屏，仍可使用全部查看功能。",
     fullscreenDenied:"浏览器未允许系统全屏；已保留浏览器内全屏查看。",
     fullscreenExitError:"退出系统全屏失败，请使用浏览器的全屏退出操作。",cleanupError:"释放上一份 PDF 时出现错误，请重新打开页面。"
@@ -149,11 +149,11 @@ const words={
     privacyTitle:"Privacy & use",privacy:"Personal medical information for the patient and authorized people only. This static website has no authentication; do not publish it publicly. A private GitHub repository does not by itself make a Pages site private.",
     offlineHelp:"PDF rendering and image viewing stay local. No online translation, external fonts or analytics. Keep the HTML, assets and exams folders in their relative locations. On mobile, extract the complete archive and open it in a browser/file app supporting local HTML and JavaScript; a system ZIP or file preview may not support interaction.",
     exportTime:"Archive updated",incomplete:"Files are not yet complete. Do not treat this page as a complete archive.",play:"Play",pause:"Pause",speed:"Playback speed",fit:"Fit",framePosition:"Frame position",pagePosition:"Page number",previousFrame:"Previous frame",nextFrame:"Next frame",previousPage:"Previous page",nextPage:"Next page",zoomIn:"Zoom in",zoomOut:"Zoom out",nativeFrame:"Source frame",
-    imageHint:"Wheel / arrows: frames · Swipe: slices · Pinch: zoom · Drag when zoomed: pan · Space: play / pause",
+    imageHint:"Wheel / arrows: frames · Swipe: slices · Pinch: zoom · Drag when zoomed: pan · Space: play / pause · Playback buffers only the next 4 frames of this set",
     imageWarning:"Patient-portal images, not complete diagnostic DICOM. Not for diagnosis. 100% means fit to screen.",
     pdfHint:"Left / right: pages · + / −: zoom · Scroll when enlarged · Esc: close",
     nativeExport:"Portal PNG",nativeExportNote:"This frame uses the site's genuine current-image download at its export dimensions; its portal response frame is preserved separately.",
-    imageError:"The image could not be read. Check the exams folder and your browser's local-file permissions. No substitute image has been used.",
+    imageError:"The image could not be read. Playback has stopped; the last successfully displayed frame, if any, remains visible. Check the exams folder and your browser's local-file permissions.",
     systemFullscreen:"System full screen",fullscreenUnavailable:"Using full-window viewing. This device does not support system full screen; all viewing controls remain available.",
     fullscreenDenied:"The browser did not allow system full screen. Full-window viewing remains available.",
     fullscreenExitError:"Could not exit system full screen. Use your browser's full-screen exit control.",cleanupError:"An error occurred while releasing the previous PDF. Reopen this page."
@@ -171,6 +171,7 @@ let modalPdfSequence=0;
 let modalPdfTask=null;
 let timer=null;
 let playing=false;
+const frameLookahead=4;
 let zoom=1,panX=0,panY=0;
 let lastFocus=null;
 let systemFullscreenOwned=false;
@@ -409,11 +410,12 @@ function showViewer(system=false){
   if(system&&!document.fullscreenElement)requestSystemFullscreen();
 }
 function pause(){
-  playing=false;clearTimeout(timer);timer=null;
+  playing=false;cancelAnimationFrame(timer);timer=null;
   $("play").textContent=t("play");$("play").classList.remove("active");$("play").setAttribute("aria-pressed","false");
 }
 function closeViewer(){
   pause();frameSequence++;modalPdfSequence++;
+  discardImageFrames();
   if(modalPdfTask){modalPdfTask.cancel();modalPdfTask=null;}
   if(viewer?.kind==="pdf")releaseDocuments();
   $("viewer").close();$("viewer-image").removeAttribute("src");$("viewer-pdf").width=1;$("viewer-pdf").height=1;
@@ -432,12 +434,14 @@ function changeImageZoom(value){
   updateImageTransform();
 }
 function openSeries(index,system=true){
-  pause();modalPdfSequence++;
+  pause();discardImageFrames();modalPdfSequence++;
   if(modalPdfTask){modalPdfTask.cancel();modalPdfTask=null;}
   const exam=currentExam(),source=exam.series[index];
   const paths=Array.from({length:source.frameCount},(_,i)=>source.folder+"/"+String(i+1).padStart(5,"0")+".png");
   const set={...source,paths,nativePaths:paths.map(path=>path.slice(0,-4)+".j2c")};
-  viewer={kind:"images",examId:exam.id,seriesIndex:index,index:0,set};
+  viewer={kind:"images",examId:exam.id,seriesIndex:index,index:0,requestedIndex:0,set,frames:new Map(),hasFrame:false,closed:false};
+  $("viewer-image").removeAttribute("src");
+  $("frame-badge").textContent="1 / "+set.paths.length;
   zoom=1;panX=0;panY=0;updateImageTransform();
   $("viewer-title").textContent=title(exam);
   $("viewer-subtitle").textContent=exam.date+" · "+t("set")+" "+(index+1)+" / "+exam.series.length+" · "+exam.id;
@@ -449,37 +453,111 @@ function openSeries(index,system=true){
   $("viewer-hint").textContent=t("imageHint");
   showViewer(system);$("image-stage").focus({preventScroll:true});loadFrame(0);
 }
-function loadFrame(index){
+function discardImageFrames(){
   if(viewer?.kind!=="images")return;
-  clearTimeout(timer);timer=null;
-  const state=viewer,set=state.set;
-  index=(index+set.paths.length)%set.paths.length;state.index=index;
-  const sequence=++frameSequence;
-  $("image-error").hidden=true;
-  $("frame-slider").value=index+1;
-  $("frame-badge").textContent=(index+1)+" / "+set.paths.length;
-  $("image-stage").setAttribute("aria-busy","true");$("viewer-image").style.opacity=".4";
-  $("download-frame").href=set.paths[index];$("download-native").href=set.nativePaths[index];
-  $("viewer-note").textContent=t("imageWarning")+(set.nativeExportFrames.includes(index)?" "+t("nativeExportNote"):"");
-  const loader=new Image();
-  loader.onload=()=>{
-    if(sequence!==frameSequence||viewer!==state)return;
-    $("viewer-image").src=set.paths[index];$("viewer-image").alt=t("set")+" "+(state.seriesIndex+1)+" · "+(index+1)+" / "+set.paths.length;
-    $("viewer-image").style.opacity="1";$("image-stage").setAttribute("aria-busy","false");
-    $("frame-badge").textContent=(index+1)+" / "+set.paths.length+" · "+loader.naturalWidth+" × "+loader.naturalHeight;
-    if(playing)timer=setTimeout(()=>loadFrame(index+1),1000/Number($("speed").value));
-  };
-  loader.onerror=()=>{
-    if(sequence!==frameSequence||viewer!==state)return;
-    pause();$("viewer-image").removeAttribute("src");$("image-stage").setAttribute("aria-busy","false");$("image-error").hidden=false;$("image-error").textContent=t("imageError");
-  };
-  loader.src=set.paths[index];
+  viewer.closed=true;
+  for(const entry of viewer.frames.values()){
+    entry.cancelled=true;
+    if(!entry.ready)entry.image.removeAttribute("src");
+  }
+  viewer.frames.clear();
 }
-function stepFrame(amount){if(viewer?.kind==="images"){pause();loadFrame(viewer.index+amount);}}
+function trimImageFrames(state){
+  const keep=new Set([state.index,state.requestedIndex]);
+  for(let offset=1;offset<=frameLookahead;offset++)keep.add((state.requestedIndex+offset)%state.set.paths.length);
+  for(const [index,entry] of state.frames){
+    if(keep.has(index))continue;
+    entry.cancelled=true;
+    if(!entry.ready)entry.image.removeAttribute("src");
+    state.frames.delete(index);
+  }
+}
+function decodedFrame(state,index){
+  if(state.frames.has(index))return state.frames.get(index);
+  const image=new Image(),entry={image,ready:false,cancelled:false};
+  image.decoding="async";image.draggable=false;
+  state.frames.set(index,entry);
+  image.src=state.set.paths[index];
+  entry.promise=image.decode().then(()=>{
+    entry.ready=true;return image;
+  },error=>{
+    if(state.frames.get(index)===entry)state.frames.delete(index);
+    throw error;
+  });
+  return entry;
+}
+function frameError(state,entry,error){
+  if(viewer!==state||state.closed||entry.cancelled)return;
+  console.error("Image frame failed",error);
+  pause();state.requestedIndex=state.index;
+  $("frame-slider").value=state.index+1;
+  $("image-stage").setAttribute("aria-busy","false");
+  $("image-error").hidden=false;$("image-error").textContent=t("imageError");
+}
+function presentFrame(state,index,image){
+  image.id="viewer-image";
+  image.alt=t("set")+" "+(state.seriesIndex+1)+" · "+(index+1)+" / "+state.set.paths.length;
+  image.style.transform=`translate(${panX}px,${panY}px) scale(${zoom})`;
+  // Insert the already decoded element so changing src cannot expose an empty frame.
+  if($("viewer-image")!==image)$("viewer-image").replaceWith(image);
+  state.index=index;state.requestedIndex=index;state.hasFrame=true;
+  $("frame-slider").value=index+1;
+  $("frame-badge").textContent=(index+1)+" / "+state.set.paths.length+" · "+image.naturalWidth+" × "+image.naturalHeight;
+  $("download-frame").href=state.set.paths[index];$("download-native").href=state.set.nativePaths[index];
+  $("viewer-note").textContent=t("imageWarning")+(state.set.nativeExportFrames.includes(index)?" "+t("nativeExportNote"):"");
+  $("image-stage").setAttribute("aria-busy","false");$("image-error").hidden=true;
+  trimImageFrames(state);
+}
+function bufferPlayback(state){
+  for(let offset=1;offset<=Math.min(frameLookahead,state.set.paths.length-1);offset++){
+    const index=(state.index+offset)%state.set.paths.length,entry=decodedFrame(state,index);
+    entry.promise.catch(error=>frameError(state,entry,error));
+  }
+}
+function startPlayback(){
+  cancelAnimationFrame(timer);timer=null;
+  if(!playing||viewer?.kind!=="images"||!viewer.hasFrame||viewer.requestedIndex!==viewer.index)return;
+  const state=viewer,interval=1000/Number($("speed").value);
+  let deadline=performance.now()+interval,buffering=false;
+  bufferPlayback(state);
+  function tick(now){
+    timer=null;
+    if(!playing||viewer!==state||state.closed)return;
+    if(now>=deadline){
+      const index=(state.index+1)%state.set.paths.length,entry=state.frames.get(index);
+      if(entry?.ready){
+        presentFrame(state,index,entry.image);
+        deadline=buffering||now-deadline>=interval?now+interval:deadline+interval;
+        buffering=false;bufferPlayback(state);
+      }else buffering=true;
+    }
+    timer=requestAnimationFrame(tick);
+  }
+  timer=requestAnimationFrame(tick);
+}
+async function loadFrame(index){
+  if(viewer?.kind!=="images")return;
+  cancelAnimationFrame(timer);timer=null;
+  const state=viewer,sequence=++frameSequence;
+  index=(index+state.set.paths.length)%state.set.paths.length;state.requestedIndex=index;
+  trimImageFrames(state);
+  $("image-error").hidden=true;$("image-stage").setAttribute("aria-busy","true");
+  const entry=decodedFrame(state,index);
+  try{
+    const image=await entry.promise;
+    await new Promise(requestAnimationFrame);
+    if(sequence!==frameSequence||viewer!==state||state.closed||entry.cancelled)return;
+    presentFrame(state,index,image);
+    if(playing)startPlayback();
+  }catch(error){
+    if(sequence===frameSequence)frameError(state,entry,error);
+  }
+}
+function stepFrame(amount){if(viewer?.kind==="images"){pause();loadFrame(viewer.requestedIndex+amount);}}
 function togglePlay(){
   if(viewer?.kind!=="images"||viewer.set.paths.length<2)return;
   if(playing){pause();return;}
-  playing=true;$("play").textContent=t("pause");$("play").classList.add("active");$("play").setAttribute("aria-pressed","true");loadFrame(viewer.index);
+  playing=true;$("play").textContent=t("pause");$("play").classList.add("active");$("play").setAttribute("aria-pressed","true");startPlayback();
 }
 function updatePdfModalControls(){
   if(viewer?.kind!=="pdf")return;
@@ -494,7 +572,7 @@ function updatePdfModalControls(){
   $("download-pdf").href=source.path;$("viewer-note").textContent=t("referenceNotice");
 }
 function openPdf(index,kind,page=1){
-  pause();frameSequence++;
+  pause();discardImageFrames();frameSequence++;
   viewer={kind:"pdf",examId:selectedId,reportIndex:index,source:kind,page,count:pdfSource(currentExam().reports[index],kind).count,zoom:1};
   $("viewer-title").textContent=title(currentExam());
   $("image-stage").hidden=true;$("pdf-stage").hidden=false;$("image-tools").hidden=true;$("pdf-tools").hidden=false;
@@ -577,7 +655,7 @@ $("series-picker").addEventListener("change",()=>openSeries(Number($("series-pic
 $("zoom-in").addEventListener("click",()=>changeImageZoom(zoom*1.25));
 $("zoom-out").addEventListener("click",()=>changeImageZoom(zoom/1.25));
 $("reset-zoom").addEventListener("click",()=>changeImageZoom(1));
-$("speed").addEventListener("change",()=>{if(playing)loadFrame(viewer.index);});
+$("speed").addEventListener("change",()=>{if(playing)startPlayback();});
 $("previous-page").addEventListener("click",()=>stepPage(-1));
 $("next-page").addEventListener("click",()=>stepPage(1));
 $("pdf-zoom-in").addEventListener("click",()=>changePdfZoom(viewer.zoom*1.25));
